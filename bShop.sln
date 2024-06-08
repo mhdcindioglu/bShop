@@ -1,13 +1,13 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34818.151
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bShop.Server", "Server\bShop.Server.csproj", "{779D90A7-0E03-492A-9C29-4C8EA033038F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bShop.Server", "Server\bShop.Server.csproj", "{779D90A7-0E03-492A-9C29-4C8EA033038F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bShop.Client", "Client\bShop.Client.csproj", "{5FCB2F85-5056-44AC-AAB3-E22DC6F7CEDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bShop.Client", "Client\bShop.Client.csproj", "{5FCB2F85-5056-44AC-AAB3-E22DC6F7CEDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bShop.Shared", "Shared\bShop.Shared.csproj", "{4B2E463C-24AC-4094-9C13-14C85CE02BC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bShop.Shared", "Shared\bShop.Shared.csproj", "{4B2E463C-24AC-4094-9C13-14C85CE02BC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
