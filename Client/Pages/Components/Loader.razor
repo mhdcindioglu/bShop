@@ -1,0 +1,12 @@
+﻿@using bShop.Client.Store.LoadingState
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IState<LoadingState> AppState
+
+@if (AppState.Value.Loading)
+{
+    <div class="tw-loader">
+        <div class="tw-ellipsis">
+            <div></div><div></div><div></div><div></div>
+        </div>
+    </div>
+}

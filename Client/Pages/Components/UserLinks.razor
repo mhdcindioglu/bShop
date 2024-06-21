@@ -1,0 +1,214 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using System.Security.Claims
+@using System.Text.Json
+@using bShop.Client.Pages.Users
+@using bShop.Client.Store.CurrentUserState
+@using bShop.Client.Store.LoadingState
+@using bShop.Shared.Models.Users
+
+@inject AuthenticationService AuthSrv
+@inject IToastService ToastSrv
+@inject IState<LoadingState> AppState
+@inject IState<CurrentUserState> CurrentUserState
+@inject AuthenticationStateProvider Auth
+@inject IDispatcher Dispatcher
+@inject NavigationManager NavMngr
+@inject IJSRuntime JS
+
+@CurUser?.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.Role)?.Value
+
+<AuthorizeView>
+    <Authorized>
+        <li>
+            <div class="btn-group user-menu">
+                <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person"></i>@CurrentUserState.Value.CurrnetUser?.FirstName
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    @* <AuthorizeView Roles="@($"{Roles.Admin},{Roles.Vendor}")">
+                    <Authorized>
+                    <li><a class="dropdown-item" href="/Admin">@Resources.Dashboard</a></li>
+                    </Authorized>
+                    <NotAuthorized></NotAuthorized>
+                    </AuthorizeView> *@
+                    @if (CurrentUserState.Value.CurrnetUser?.IsInRole(Roles.Admin) == true)
+                    {
+                        <li><a class="dropdown-item" href="/Admin">@Resources.Dashboard</a></li>
+                    }
+                    <li><a class="dropdown-item" @onclick="Profile">@Resources.UserProfile</a></li>
+                    <li><a class="dropdown-item" @onclick="Logout">@Resources.Logout</a></li>
+                </ul>
+            </div>
+        </li>
+    </Authorized>
+    <NotAuthorized>
+        <li>
+            @if (Registering)
+            {
+                <SpinnerGrow Size="Models.Sizes.Small" Text="@Resources.Register" />
+            }
+            else
+            {
+                <a @onclick="@(async() => await Register())"><i class="bi bi-person-plus"></i>@Resources.Register</a>
+            }
+        </li>
+        <li>
+            @if (Signingin)
+            {
+                <SpinnerGrow Size="Models.Sizes.Small" Text="@Resources.SignIn" />
+            }
+            else
+            {
+                <a @onclick="@(async() => await Login())"><i class="bi bi-person"></i>@Resources.SignIn</a>
+            }
+        </li>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter] public IModalService ModalSrv { get; set; } = default!;
+    bool signingin;
+    bool Signingin { get => signingin; set { signingin = value; StateHasChanged(); } }
+    bool registering;
+    bool Registering { get => registering; set { registering = value; StateHasChanged(); } }
+    AuthenticationState? auth;
+    ClaimsPrincipal? CurUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        auth = await Auth.GetAuthenticationStateAsync();
+        CurUser = auth.User;
+    }
+
+
+    async Task Login(LoginRequestVM? loginRequestVM = null)
+    {
+        try
+        {
+            Signingin = true;
+            var modal = loginRequestVM != null ? ModalSrv.Show<LoginModal>(new ModalParameters { { nameof(LoginModal.Model), loginRequestVM } }) : ModalSrv.Show<LoginModal>();
+            var result = await modal.Result;
+            Signingin = false;
+            if (result != null)
+            {
+                if (result.Confirmed)
+                {
+                }
+                else if (result.Cancelled && result.Data?.ToString() == nameof(Reset))
+                    await Reset();
+                else if (result.Cancelled && result.Data?.ToString() == nameof(Register))
+                    await Register();
+            }
+        }
+        catch (Exception ex)
+        {
+            Signingin = false;
+            ToastSrv.ShowError(ex.InnerMessage());
+        }
+
+    }
+
+    async Task Register()
+    {
+        try
+        {
+            Registering = true;
+            var modal = ModalSrv.Show<RegisterModal>();
+            var result = await modal.Result;
+            Registering = false;
+            if (result != null)
+            {
+                if (result.Confirmed)
+                {
+                    await JS.MessageBox(Resources.UserRegestedSucceeded, icon: SweetAlert.Icons.Success);
+                    var loginModel = JsonSerializer.Deserialize<LoginRequestVM>(result.Data?.ToString() ?? "");
+                    if (loginModel != null)
+                        await Login(loginModel);
+                }
+                else if (result.Cancelled && result.Data?.ToString() == nameof(Reset))
+                    await Reset();
+                else if (result.Cancelled && result.Data?.ToString() == nameof(Login))
+                    await Login();
+            }
+        }
+        catch (Exception ex)
+        {
+            Registering = false;
+            ToastSrv.ShowError(ex.InnerMessage());
+        }
+
+    }
+
+    async Task Reset()
+    {
+        try
+        {
+            var modal = ModalSrv.Show<ResetModal>();
+            var result = await modal.Result;
+            if (result != null)
+            {
+                if (result.Confirmed)
+                    await JS.MessageBox(Resources.UserResetSucceeded, icon: SweetAlert.Icons.Success);
+                else if (result.Cancelled && result.Data?.ToString() == nameof(Login))
+                    await Login();
+                else if (result.Cancelled && result.Data?.ToString() == nameof(Register))
+                    await Register();
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.InnerMessage());
+        }
+    }
+
+    async Task Logout()
+    {
+        Dispatcher.Dispatch(new UpdateLoadingStateAction(true));
+        var response = await AuthSrv.LogoutAsync();
+        Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+        if (response.IsSuccess)
+            ToastSrv.ShowSuccess(Resources.UserLogoutSucceeded);
+        else
+            ToastSrv.ShowError(response.ErrorsMessage);
+    }
+
+    async Task Profile()
+    {
+        try
+        {
+            var modal = ModalSrv.Show<ProfileModal>(new ModalOptions { Size = ModalSize.Large, });
+            var result = await modal.Result;
+            if (result != null)
+            {
+                if (result.Confirmed && result.Data is LoginResponseVM response)
+                    await JS.MessageBox(Resources.UpdatingProfileSucceeded, icon: SweetAlert.Icons.Success);
+                else if (result.Cancelled && result.Data?.ToString() == nameof(ChangePassword))
+                    await ChangePassword();
+            }
+            // auth = await Auth.GetAuthenticationStateAsync();
+            // CurUser = auth.User;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.InnerMessage());
+        }
+    }
+
+    async Task ChangePassword()
+    {
+        try
+        {
+            var parameters = new ModalParameters { { nameof(ChangePasswordModal.Model), new ChangePasswordRequestVM { ID = CurrentUserState.Value.CurrnetUser.Id, } } };
+            var modal = ModalSrv.Show<ChangePasswordModal>(parameters, new ModalOptions { Size = ModalSize.Large, });
+            var result = await modal.Result;
+            if (result != null && result.Confirmed)
+                await JS.MessageBox(Resources.PasswordChangedSucceeded, icon: SweetAlert.Icons.Success);
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.InnerMessage());
+        }
+    }
+}

@@ -1,0 +1,104 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using bShop.Client.Store.LoadingState
+@using bShop.Localization;
+@using bShop.Shared.Models.Users
+@inject AuthenticationService AuthSrv
+@inject IToastService ToastSrv
+@inject IState<LoadingState> AppState
+@inject IDispatcher Dispatcher
+
+<div class="register">
+    <h4>@Resources.Login</h4>
+    <p>@Resources.PleaseEnterYourEmailAddressAndPassword</p>
+
+    <EditForm Model="Model" OnValidSubmit="Login">
+        <DataAnnotationsValidator />
+        <ShopValidation @ref="AppValidation" />
+
+        <div class="form-floating mb-3">
+            <InputText @bind-Value="@Model.UserName" type="email" class="form-control" placeholder="@Resources.PlaceHolderEmail" />
+            <Label For="() => Model.UserName" />
+            <ValidationMessage For="@(() => Model.UserName)" />
+        </div>
+
+        <div class="form-floating mb-3">
+            <InputText @bind-Value="@Model.Password" type="password" class="form-control " placeholder="@Resources.PlaceHolderPassword" />
+            <Label For="() => Model.Password" />
+            <ValidationMessage For="@(() => Model.Password)" />
+        </div>
+
+        <div class="tw_checkbox checkbox_group">
+            <InputCheckbox @bind-Value="@Model.RememberMe" id="remember" type="checkbox" />
+            <label for="remember">@Resources.RememberMe</label>
+            <span></span>
+        </div>
+
+        @if (AppState.Value.Loading)
+        {
+            <button class="btn theme-btn full disabled"><SpinnerGrow Color="Colors.Light" Size="Sizes.Small" Text="@Resources.LogingIn" Align="Align.Center" /></button>
+        }
+        else
+        {
+            <button class="btn theme-btn full">@Resources.Login</button>
+        }
+    </EditForm>
+
+    <h3><a @onclick="Reset">@Resources.ForgotYourPassword</a></h3>
+    <h3><a @onclick="Register">@Resources.SignUpForAnAccount</a></h3>
+</div>
+
+@code {
+    [Parameter] public LoginRequestVM Model { get; set; } = new() { UserName = "admin@email.com", Password = "P@ssw0rd", };
+    [CascadingParameter] public IModalService ModalSrv { get; set; } = default!;
+    [CascadingParameter] public BlazoredModalInstance Modal { get; set; } = default!;
+    ShopValidation AppValidation = default!;
+
+    async void Reset() =>
+        await Modal.CloseAsync(ModalResult.Cancel(nameof(LoginModal.Reset)));
+
+    async void Register() =>
+        await Modal.CloseAsync(ModalResult.Cancel(nameof(LoginModal.Register)));
+
+    async void Login()
+    {
+        try
+        {
+            var errors = new Dictionary<string, List<string>>();
+
+            if (errors.Any())
+                AppValidation?.DisplayErrors(errors);
+            else
+            {
+                Dispatcher.Dispatch(new UpdateLoadingStateAction(true));
+                var response = await AuthSrv.LoginAsync(Model);
+                Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+                if (response.IsSuccess)
+                {
+                    ToastSrv.ShowSuccess(Resources.UserLoginSucceeded);
+                    await Modal.CloseAsync(ModalResult.Ok());
+                }
+                else
+                {
+                    if (response.HasErrors(ApiResultErrorType.UnAuthorized))
+                        errors.Add(nameof(RegisterRequestVM.UserName), [Resources.UserLoginFailed]);
+                    else if (response.HasErrors(ApiResultErrorType.UserLocked))
+                        errors.Add(nameof(RegisterRequestVM.UserName), [Resources.UserLocked]);
+                    else if (response.HasErrors(ApiResultErrorType.UserNeedEmailActivation))
+                        errors.Add(nameof(RegisterRequestVM.UserName), [Resources.UserNeedEmailActivation]);
+                    else if (response.HasErrors(ApiResultErrorType.UserNotActive))
+                        errors.Add(nameof(RegisterRequestVM.UserName), [Resources.UserNotActive]);
+                    else if (response.HasErrors(ApiResultErrorType.UserRequiresTwoFactor))
+                        errors.Add(nameof(RegisterRequestVM.UserName), ["Two factor code is not ready yet."]);
+
+                    AppValidation?.DisplayErrors(errors);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.InnerMessage());
+            Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+        }
+    }
+}

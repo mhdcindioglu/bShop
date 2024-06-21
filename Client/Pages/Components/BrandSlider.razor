@@ -1,0 +1,41 @@
+﻿@using bShop.Client.Models
+@inject IJSRuntime JS
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="section-heading">
+                <h3 class="title">Shop by Brands</h3>
+            </div>
+        </div>
+        <div class="row banner-slider owl-carousel caro-common">
+            @foreach (var item in Carousels)
+            {
+                <div class="col-lg-12">
+                    <div class="brand-card">
+                        <a href="@item.Link"><img src="@item.Image" alt="@item.Text"></a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    CarouselItemModel[] Carousels = [
+    new CarouselItemModel{ ID = 1, Image = "imgs/brands/brand-1.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 2, Image = "imgs/brands/brand-2.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 3, Image = "imgs/brands/brand-3.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 4, Image = "imgs/brands/brand-4.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 5, Image = "imgs/brands/brand-5.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 6, Image = "imgs/brands/brand-6.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 7, Image = "imgs/brands/brand-7.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 8, Image = "imgs/brands/brand-8.png", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 9, Image = "imgs/brands/brand-9.png", Link = "/", Text = "", },
+    ];
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JS.InvokeVoidAsync("bannerSlider");
+    }
+}

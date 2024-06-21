@@ -1,0 +1,15 @@
+﻿@using bShop.Client.Store.LoadingState
+@inject IState<LoadingState> AppState
+
+@if (AppState.Value.Loading && !string.IsNullOrEmpty(WorkingText))
+{
+    <button class="btn theme-btn full disabled"><SpinnerGrow Color="Colors.Light" Size="Sizes.Small" Text="@WorkingText" Align="Align.Center" /></button>
+}
+else
+{
+    <button class="btn theme-btn full">@Text</button>
+}
+@code {
+    [Parameter] public required string Text { get; set; }
+    [Parameter] public string? WorkingText { get; set; }
+}

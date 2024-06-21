@@ -1,0 +1,42 @@
+﻿@using Blazored.Toast.Configuration
+@inherits LayoutComponentBase
+@inject IJSRuntime JS
+
+<HeadContent>
+    <meta charset="utf-8" />
+    <title>bShop</title>
+    <base href="/" />
+    <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-icons.css" rel="stylesheet" />
+    <link href="css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="css/jquery.gritter.min.css" rel="stylesheet" />
+    <link href="libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link href="bShop.Client.styles.css" rel="stylesheet" />
+</HeadContent>
+
+<BlazoredToasts PauseProgressOnHover="true" ShowProgressBar="true" Position="ToastPosition.TopRight" />
+
+<Loader />
+<TopHeader />
+<Header />
+<MenuBar />
+
+<main>
+    @Body
+</main>
+
+<Footer />
+<a href="#top" class="scroll-to-top" @onclick="ScrollToTop" style="display: inline-block;">
+    <i class="bi bi-arrow-up"></i>
+</a>
+
+@code {
+    async void ScrollToTop()
+    {
+        await JS.InvokeVoidAsync("scrollToTop");
+        StateHasChanged();
+    }
+}

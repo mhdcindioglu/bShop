@@ -1,0 +1,10 @@
+﻿@page "/Admin"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = Roles.Admin)]
+@layout DashboardLayout
+
+<h3>Index</h3>
+
+@code {
+
+}

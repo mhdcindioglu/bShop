@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+@inject IJSRuntime JS
+
+<BlazoredToasts PauseProgressOnHover="true" ShowProgressBar="true" Position="ToastPosition.TopRight" />
+
+<Loader/>
+<TopHeader />
+<Header />
+<CatMenuBar />
+<main>
+    @Body
+</main>
+
+<Footer />
+<ShoppingCart />
+<a href="#top" class="scroll-to-top" @onclick="ScrollToTop" style="display: inline-block;">
+    <i class="bi bi-arrow-up"></i>
+</a>
+
+@code {
+    async void ScrollToTop()
+    {
+        await JS.InvokeVoidAsync("scrollToTop");
+        StateHasChanged();
+    }
+}

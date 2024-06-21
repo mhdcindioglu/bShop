@@ -1,0 +1,17 @@
+﻿@page "/Logout"
+@using bShop.Client.Store.CurrentUserState
+
+@inject NavigationManager NavMngr
+@inject ILocalStorageService LocalStorageSrv
+@inject AuthenticationStateProvider AuthenticationStateProv
+@inject IDispatcher Dispatcher
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await LocalStorageSrv.RemoveToken();
+        ((ShopAuthenticationStateProvider)AuthenticationStateProv).NotifyUserLogout();
+        Dispatcher.Dispatch(new UpdateCurrentUserAction(new CurrnetUserModel()));
+        NavMngr.NavigateTo("/");
+    }
+}

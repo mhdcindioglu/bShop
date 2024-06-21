@@ -1,3 +1,104 @@
-﻿@page "/"
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<h1>Hello, world!</h1>
+@page "/"
+@page "/EmailConfirmed"
+@page "/PasswordReseted"
+@page "/PasswordChanged"
+@page "/ReResetPassword/{Email}"
+@page "/ResetPassword/{UserID}/{Code}"
+
+@using bShop.Client.Pages.Users
+@using bShop.Client.Store.LoadingState
+@using bShop.Shared.Models.Users
+
+@inject NavigationManager NavMngr
+@inject IDispatcher Dispatcher
+@inject IToastService ToastSrv
+@inject IJSRuntime JS
+
+<HomeSlider />
+<Banner />
+<BrandSlider />
+<NewProductsSlider />
+<TrendingProducts />
+<BestSellers />
+<AvailableOffer />
+<Trending />
+
+@code {
+    [Parameter] public string? UserID { get; set; }
+    [Parameter] public string? Code { get; set; }
+    [Parameter] public string? Email { get; set; }
+    [CascadingParameter] public IModalService ModalSrv { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            var uri = NavMngr.ToAbsoluteUri(NavMngr.Uri);
+            if (uri.AbsolutePath.StartsWith("/ResetPassword", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!string.IsNullOrEmpty(UserID) && !string.IsNullOrEmpty(Code) && int.TryParse(UserID, out int id))
+                {
+                    var parameters = new ModalParameters
+                        {
+                            {
+                                nameof(ResetPasswordModal.Model),
+                                new ResetPasswordRequestVM { ID = id, Code = Code, }
+                            },
+                        };
+                    var modal = ModalSrv.Show<ResetPasswordModal>(parameters);
+                    var result = await modal.Result;
+                    if (result.Confirmed)
+                        NavMngr.NavigateTo("/PasswordChanged");
+                    else
+                        NavMngr.NavigateTo("/");
+                }
+                else
+                    NavMngr.NavigateTo("/");
+            }
+            else if (uri.AbsolutePath.StartsWith("/ReResetPassword", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!string.IsNullOrEmpty(Email))
+                {
+                    var parameters = new ModalParameters
+                        {
+                            {
+                                nameof(ResetModal.Model),
+                                new ResetRequestVM { Email = Email, HideLinks = true, }
+                            },
+                        };
+                    var modal = ModalSrv.Show<ResetModal>(parameters);
+                    var result = await modal.Result;
+                    if (result != null)
+                    {
+                        if (result.Confirmed)
+                            await JS.MessageBox(Resources.UserResetSucceeded, icon: SweetAlert.Icons.Success);
+                    }
+                }
+                else
+                    NavMngr.NavigateTo("/");
+            }
+            else if (uri.AbsolutePath.StartsWith("/PasswordChanged", StringComparison.OrdinalIgnoreCase))
+            {
+                await JS.MessageBox(Resources.UserChangePasswordSucceeded, icon: SweetAlert.Icons.Success);
+                NavMngr.NavigateTo("/");
+            }
+            else if (uri.AbsolutePath.StartsWith("/PasswordReseted", StringComparison.OrdinalIgnoreCase))
+            {
+                await JS.MessageBox(Resources.PasswordReseted, icon: SweetAlert.Icons.Success);
+                NavMngr.NavigateTo("/");
+            }
+            else if (uri.AbsolutePath.StartsWith("/EmailConfirmed", StringComparison.OrdinalIgnoreCase))
+            {
+                await JS.MessageBox(Resources.EmailConfirmed, icon: SweetAlert.Icons.Success);
+                NavMngr.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+            ToastSrv.ShowError(ex.InnerMessage());
+        }
+    }
+}

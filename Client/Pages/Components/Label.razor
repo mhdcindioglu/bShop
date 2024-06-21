@@ -1,0 +1,28 @@
+﻿@using System.Linq.Expressions
+@using System.ComponentModel
+@using System.Reflection
+
+@if (!string.IsNullOrEmpty(DisplayName))
+{
+    <label for="@For">@DisplayName</label>
+}
+
+@code {
+    [Parameter] public Expression<Func<object>> For { get; set; }
+
+    private string DisplayName
+    {
+        get
+        {
+            if (For == null)
+                return null;
+
+            var expression = (MemberExpression)For.Body;
+            var propertyName = expression.Member.Name;
+            var propertyInfo = expression.Member as PropertyInfo;
+            var displayNameAttr = propertyInfo?.GetCustomAttribute(typeof(DisplayNameAttribute)) as DisplayNameAttribute;
+
+            return displayNameAttr?.DisplayName ?? propertyName;
+        }
+    }
+}

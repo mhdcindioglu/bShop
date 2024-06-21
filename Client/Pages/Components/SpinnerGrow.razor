@@ -1,0 +1,17 @@
+﻿@using bShop.Client.Models
+<span class="d-flex align-items-center @_Align">
+    <div class="spinner-grow @_Size @_Color" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    @Text
+</span>
+
+@code {
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public Colors Color { get; set; } = Colors.Muted;
+    [Parameter] public Sizes Size { get; set; } = Sizes.Small;
+    [Parameter] public Align Align { get; set; } = Align.Start;
+    string? _Size => Size == Sizes.Small ? "spinner-grow-sm" : Size == Sizes.Larg ? "spinner-grow-lg" : null;
+    string? _Align => "justify-content-" + (Align == Align.Left ? "left" : Align == Align.Start ? "flex-start" : Align == Align.Center ? "center" : Align == Align.End ? "flex-end" : "right");
+    string? _Color => $"text-{Color.ToString().ToLower()}";
+}

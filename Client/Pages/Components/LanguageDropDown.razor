@@ -1,0 +1,71 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using System.Text.Json
+@using System.Globalization
+@using bShop.Client.Store.LanguageState
+@using bShop.Shared.Models.Languages
+@inject IState<LanguageState> LanguageState
+@inject IDispatcher Dispatcher
+@inject ILanguagesClient LanguageSrv
+@inject IToastService ToastSrv
+@inject ILocalStorageService LocalStorageSrv
+@inject IJSRuntime JS
+@inject NavigationManager NavMngr
+
+@if (LanguageState.Value.Language?.Rtl == true)
+{
+    <HeadContent>
+        <link href="css/bootstrap.rtl.min.css" rel="stylesheet" />
+        <link href="css/rtl.css" rel="stylesheet" />
+    </HeadContent>
+}
+else if (LanguageState.Value.Language?.Rtl == false)
+{
+    <HeadContent>
+        <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    </HeadContent>
+}
+
+@if (Languages.Length > 0)
+{
+    <li>
+        <div class="btn-group language-menu">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-translate"></i>@LanguageState.Value.Language?.Name
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                @foreach (var lang in Languages)
+                {
+                    <li><a class="dropdown-item" @onclick="@(() => LanguageChanged(lang))">@lang.Name</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+}
+
+@code {
+    LanguageVM[] Languages = [];
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await LanguageSrv.Languages();
+        if (response.IsSuccess)
+            Languages = response.Results ?? [];
+        else
+            ToastSrv.ShowError(response.ErrorsMessage);
+
+        var lang = await LocalStorageSrv.GetItemAsync<LanguageVM>("Lang");
+        if (lang != null)
+        {
+            Dispatcher.Dispatch(new UpdateLanguageAction(lang));
+            await JS.InvokeVoidAsync("updateLanguage", lang.SeoCode, lang.Rtl);
+        }
+        else
+            ToastSrv.ShowError(Resources.NoLanguageAddedYet);
+    }
+
+    async void LanguageChanged(LanguageVM lang)
+    {
+        await LocalStorageSrv.SetItemAsync<LanguageVM>("Lang", lang);
+        NavMngr.NavigateTo("/", forceLoad: true);
+    }
+}

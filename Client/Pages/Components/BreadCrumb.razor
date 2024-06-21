@@ -1,0 +1,31 @@
+﻿@using bShop.Client.Models
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="align-items-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @foreach (var item in BreadCrumbs)
+                    {
+                        <li class="breadcrumb-item">
+                            @if (string.IsNullOrEmpty(item.Url))
+                            {
+                                <span>@item.Title</span>
+                            }
+                            else
+                            {
+                                <a href="@item.Url">@item.Title</a>
+                            }
+                        </li>
+                    }
+                </ol>
+            </nav>
+            <div class="page-title">
+                <h1>@Title</h1>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public required string Title { get; set; }
+    [Parameter] public required BreadCrumbModel[] BreadCrumbs { set; get; } = [];
+}

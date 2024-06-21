@@ -1,0 +1,67 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using bShop.Client.Store.LoadingState
+@using bShop.Shared.Models.Users
+@inject AuthenticationService AuthSrv
+@inject IState<LoadingState> AppState
+@inject IToastService ToastSrv
+@inject IDispatcher Dispatcher
+
+<div class="register">
+    <h4>Reset Password</h4>
+    <p>Enter your email address below and we will send you a link to reset your password</p>
+
+    <EditForm Model="Model" OnValidSubmit="Reset">
+        <DataAnnotationsValidator />
+        <ShopValidation @ref="AppValidation" />
+
+        <div class="form-group">
+            <InputText @bind-Value="@Model.Email" type="email" class="form-control" placeholder="Email Address" />
+            <ValidationMessage For="@(() => Model.Email)" />
+        </div>
+        @if (AppState.Value.Loading)
+        {
+            <button class="btn theme-btn full disabled"><SpinnerGrow Color="Colors.Light" Size="Sizes.Small" Text="@Resources.ResetPassword" Align="Align.Center" /></button>
+        }
+        else
+        {
+            <button class="btn theme-btn full">@Resources.ResetPassword</button>
+        }
+    </EditForm>
+
+    @if (!Model.HideLinks)
+    {
+        <h3><a @onclick="Register">Sign up for an account</a></h3>
+        <h3><a @onclick="Login">Back to login</a></h3>
+    }
+</div>
+
+@code {
+    [Parameter] public ResetRequestVM Model { get; set; } = new();
+    [CascadingParameter] public IModalService ModalSrv { get; set; } = default!;
+    [CascadingParameter] public BlazoredModalInstance Modal { get; set; } = default!;
+    ShopValidation AppValidation = default!;
+
+    async void Register() =>
+        await Modal.CloseAsync(ModalResult.Cancel(nameof(ResetModal.Register)));
+
+    async void Login() =>
+        await Modal.CloseAsync(ModalResult.Cancel(nameof(ResetModal.Login)));
+
+    async void Reset()
+    {
+        try
+        {
+            Dispatcher.Dispatch(new UpdateLoadingStateAction(true));
+            await AuthSrv.ResetAsync(Model);
+            Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+            ToastSrv.ShowSuccess(Resources.UserResetSucceeded);
+            await Modal.CloseAsync(ModalResult.Ok());
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.InnerMessage());
+            Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+        }
+    }
+}

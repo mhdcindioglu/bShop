@@ -1,0 +1,98 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using System.Text.Json
+@using bShop.Client.Store.LoadingState
+@using bShop.Shared.Models.Users
+@inject AuthenticationService AuthSrv
+@inject IToastService ToastSrv
+@inject IState<LoadingState> AppState
+@inject IDispatcher Dispatcher
+
+<div class="register">
+    <h4>Create an customer account</h4>
+    <p>Please fill in the information below</p>
+
+    <EditForm Model="Model" OnValidSubmit="Register">
+        <DataAnnotationsValidator />
+        <ShopValidation @ref="AppValidation" />
+
+        <div class="form-group">
+            <InputText @bind-Value="@Model.FullName" type="name" class="form-control" placeholder="Full Name" />
+            <ValidationMessage For="@(() => Model.FullName)" />
+        </div>
+        <div class="form-group">
+            <InputText @bind-Value="@Model.UserName" type="email" class="form-control" placeholder="Email Address" />
+            <ValidationMessage For="@(() => Model.UserName)" />
+        </div>
+        <div class="form-group">
+            <InputText @bind-Value="@Model.Password" type="password" class="form-control " placeholder="Password" />
+            <ValidationMessage For="@(() => Model.Password)" />
+        </div>
+        <div class="form-group">
+            <InputText @bind-Value="@Model.ConfirmPassword" type="password" class="form-control " placeholder="Confirm Password" />
+            <ValidationMessage For="@(() => Model.ConfirmPassword)" />
+        </div>
+
+        @if (AppState.Value.Loading)
+        {
+            <button class="btn theme-btn full disabled"><SpinnerGrow Color="Colors.Light" Size="Sizes.Small" Text="@Resources.Registering" Align="Align.Center" /></button>
+        }
+        else
+        {
+            <button class="btn theme-btn full">@Resources.Register</button>
+        }
+    </EditForm>
+
+    <h3><a @onclick="Reset">Forgot your password?</a></h3>
+    <h3><a @onclick="Login">Back to login</a></h3>
+</div>
+
+@code {
+    [Parameter] public RegisterRequestVM Model { get; set; } = new() { FullName = "Muhammed Cindioglu", UserName = "mhdcindioglu@gmail.com", Password = "P@ssw0rd", ConfirmPassword = "P@ssw0rd", };
+    [CascadingParameter] public IModalService ModalSrv { get; set; } = default!;
+    [CascadingParameter] public BlazoredModalInstance Modal { get; set; } = default!;
+    ShopValidation AppValidation = default!;
+
+    async void Reset() =>
+        await Modal.CloseAsync(ModalResult.Cancel(nameof(RegisterModal.Reset)));
+
+    async void Login() =>
+        await Modal.CloseAsync(ModalResult.Cancel(nameof(RegisterModal.Login)));
+
+    async void Register()
+    {
+        try
+        {
+            var errors = new Dictionary<string, List<string>>();
+
+            if (errors.Any())
+                AppValidation?.DisplayErrors(errors);
+            else
+            {
+                Dispatcher.Dispatch(new UpdateLoadingStateAction(true));
+                var response = await AuthSrv.RegisterAsync(Model);
+                Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+                if (response.IsSuccess)
+                {
+                    var loginModel = new LoginRequestVM { UserName = Model.UserName, Password = Model.Password, };
+                    await Modal.CloseAsync(ModalResult.Ok(JsonSerializer.Serialize(loginModel)));
+                }
+                else
+                {
+                    if (response.HasErrors(ApiResultErrorType.AddedBefore))
+                    {
+                        errors.Add(nameof(RegisterRequestVM.UserName), response.VadiladtionErrorsMessage(nameof(RegisterRequestVM.UserName)));
+                        AppValidation?.DisplayErrors(errors);
+                    }
+                    else
+                        ToastSrv.ShowError(response.ErrorsMessage);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.InnerMessage());
+            Dispatcher.Dispatch(new UpdateLoadingStateAction(false));
+        }
+    }
+}

@@ -1,0 +1,33 @@
+﻿@using bShop.Client.Models
+@inject IJSRuntime JS
+
+<div class="slider-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 offset-lg-3">
+                <div class="home-slider owl-carousel d-block">
+                    @foreach (var item in Carousels)
+                    {
+                        <div class="slider-item">
+                            <a href="@item.Link"><img src="@item.Image" alt="@item.Text"></a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    CarouselItemModel[] Carousels = [
+        new CarouselItemModel{ ID = 1, Image = "imgs/sliders/slider-1.jpg", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 2, Image = "imgs/sliders/slider-2.jpg", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 3, Image = "imgs/sliders/slider-3.jpg", Link = "/", Text = "", },
+    new CarouselItemModel{ ID = 4, Image = "imgs/sliders/slider-4.jpg", Link = "/", Text = "", },
+    ];
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JS.InvokeVoidAsync("homeSlider");
+    }
+}

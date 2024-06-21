@@ -1,0 +1,20 @@
+﻿@page "/OrderTracking/{OrderNo}/{Email}"
+
+@if (string.IsNullOrEmpty(OrderNo) && string.IsNullOrEmpty(Email))
+{
+    
+}
+else
+{
+    
+}
+
+@code {
+    [Parameter] public string? OrderNo { get; set; }
+    [Parameter] public string? Email { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        
+    }
+}

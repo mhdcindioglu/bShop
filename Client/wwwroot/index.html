@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <title>bShop</title>
     <base href="/" />
-    <link href="css/app.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
+
+    <component type="typeof(HeadOutlet)" render-mode="Static" />
+    <link href="css/bootstrap-icons.css" rel="stylesheet" />
+    <link href="css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="css/jquery.gritter.min.css" rel="stylesheet" />
+    <link href="libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
     <link href="bShop.Client.styles.css" rel="stylesheet" />
+
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div class="tw-loader">
+            <div class="tw-ellipsis">
+                <div></div><div></div><div></div><div></div>
+            </div>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -20,6 +33,13 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+
+    <script src="libs/jquery/jquery.min.js"></script>
+    <script src="libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/getnicescroll.js"></script>
+    <script src="libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34818.151
@@ -8,6 +7,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bShop.Client", "Client\bShop.Client.csproj", "{5FCB2F85-5056-44AC-AAB3-E22DC6F7CEDE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bShop.Shared", "Shared\bShop.Shared.csproj", "{4B2E463C-24AC-4094-9C13-14C85CE02BC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bShop.Localization", "Localization\bShop.Localization.csproj", "{6355C3E0-CACA-41CA-847A-A4BEAD6B06D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +28,10 @@ Global
 		{4B2E463C-24AC-4094-9C13-14C85CE02BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B2E463C-24AC-4094-9C13-14C85CE02BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B2E463C-24AC-4094-9C13-14C85CE02BC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6355C3E0-CACA-41CA-847A-A4BEAD6B06D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6355C3E0-CACA-41CA-847A-A4BEAD6B06D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6355C3E0-CACA-41CA-847A-A4BEAD6B06D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6355C3E0-CACA-41CA-847A-A4BEAD6B06D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
