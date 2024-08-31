@@ -17,4 +17,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0-preview.7.24413.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\libs\" />
+    <Folder Include="wwwroot\fonts\" />
+  </ItemGroup>
+
 </Project>
