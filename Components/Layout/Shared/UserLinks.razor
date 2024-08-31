@@ -1,0 +1,27 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <li>
+            <div class="btn-group user-menu">
+                <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person"></i>Currnet User
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/Admin">@Resource.Dashboard</a></li>
+                    <li><a class="dropdown-item">@Resource.UserProfile</a></li>
+                    <li><a class="dropdown-item">@Resource.Logout</a></li>
+                </ul>
+            </div>
+        </li>
+    </Authorized>
+    <NotAuthorized>
+        <li>
+            <a ><i class="bi bi-person-plus"></i>@Resource.Register</a>
+        </li>
+        <li>
+            <a ><i class="bi bi-person"></i>@Resource.SignIn</a>
+        </li>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+}

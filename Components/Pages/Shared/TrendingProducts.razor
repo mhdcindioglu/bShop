@@ -1,0 +1,39 @@
+﻿@using static bShop.Components.Pages.Shared.ProductCard
+@inject IJSRuntime JS
+@rendermode InteractiveServer
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="section-heading">
+                <h3 class="title">@Resource.TrendingProducts</h3>
+                <a class="btn theme-btn seeall-btn" href="/">@Resource.SeeAll</a>
+            </div>
+        </div>
+
+        <div class="row owl-carousel caro-common new-products-carousel">
+            @foreach (var prd in Products)
+            {
+                <ProductCard Product="prd" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    ProductCardVM[] Products = 
+    [
+        new ProductCardVM(){ ID = 6, Name = "Yellow (VF1100C V65)", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-6.jpg", Price = 5500, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#e7a202"], },
+        new ProductCardVM(){ ID = 7, Name = "Blue Gixxer SF", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-7.jpg", Price = 5500, Labels = [], Colors = ["#10c4e4"], },
+        new ProductCardVM(){ ID = 8, Name = "White Gixxer", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-8.jpg", Price = 8500, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#c8c8c8"], },
+        new ProductCardVM(){ ID = 9, Name = "Celeron N4020 HD Laptop", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-9.jpg", Price = 975, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#dd0e14", "#7a6fec"], },
+        new ProductCardVM(){ ID = 10, Name = "IdeaPad Slim HD Laptop", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-10.jpg", Price = 1250, Labels = [], Colors = ["#dd0e14", "#7a6fec"], },
+        new ProductCardVM(){ ID = 11, Name = "Phone 11 Lite 5G NE", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-11.jpg", Price = 550, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#dd0e14", "#7a6fec"], },
+    ];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JS.InvokeVoidAsync("productsSlider", ".new-products-carousel");
+    }
+}

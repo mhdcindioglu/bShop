@@ -1,0 +1,29 @@
+﻿
+<div class="cart-sidebar">
+	<a class="sidebar-close sidebar_show_hide">
+		<i class="bi bi-x-lg"></i>
+	</a>
+	<div class="cart-head">
+		@Resource.ShoppingCart
+	</div>
+	<div class="cart-body" id="tp_cart_data"></div>
+	<div class="cart-footer">
+		<div class="carttotals">
+			<span class="title">@Resource.Subtotal:</span>
+			<span class="price sub_total">$0.00</span>
+		</div>
+		<div class="carttotals">
+			<span class="title">@Resource.Tax:</span>
+			<span class="price tax">$0.00</span>
+		</div>
+		<div class="carttotals">
+			<span class="title">@Resource.Total:</span>
+			<span class="price tp_total">$0.00</span>
+		</div>
+		<a href="https://bshopen.themeposh.net/cart" class="btn black-btn checkout mt10">@Resource.ViewCart</a>
+		<a href="https://bshopen.themeposh.net/checkout" class="btn theme-btn checkout">@Resource.Checkout</a>
+	</div>
+</div>
+
+@code {
+}

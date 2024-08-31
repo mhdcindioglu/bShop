@@ -1,0 +1,86 @@
+﻿<div class="col-lg-12">
+    <div class="item-card mb30">
+        <div class="item-image">
+            <ul class="labels-list">
+                @foreach (var lbl in Product.Labels)
+                {
+                    <li><span class="tplabel" style="color: @(lbl.FColor); background:@(lbl.BColor);">@lbl.Text</span></li>
+                }
+            </ul>
+            <ul class="product-action">
+                <li><a href="/"><i class="bi bi-cart"></i></a></li>
+                <li><a href="/"><i class="bi bi-zoom-in"></i></a></li>
+                <li><a class="addtowishlist" data-id="47" href="javascript:void(0);"><i class="bi bi-heart"></i></a></li>
+            </ul>
+            <ul class="color-list">
+                @foreach (var clr in Product.Colors)
+                {
+                    <li style="background: @clr;"></li>
+                }
+            </ul>
+            <a href="@Product.Link"><img src="imgs/products/@Product.Image" alt="@Product.Name"></a>
+        </div>
+        <h4 class="item-title"><a href="@Product.Link">@Product.Name</a></h4>
+        <div class="brand-card">
+            <div class="brand">
+                <span>@Resource.Brand <a href="brands/@(Product.BrandID)">@Product.BrandName</a></span>
+            </div>
+            <div class="brand">
+                <span>@Resource.SoldBy <a href="vendors/@(Product.VendorID)">Product.VendorName</a></span>
+            </div>
+        </div>
+        <div class="item-price-card">
+            <div class="item-price">@($"{Product.Price:P2}")</div>
+        </div>
+        @if (Product.ShowRating)
+        {
+            <div class="rating-wrap">
+                <div class="stars-outer">
+                    <div class="stars-inner" style="width:@(Product.RatingRate)%;"></div>
+                </div>
+                <span class="rating-count">(@Product.RatingCount)</span>
+            </div>
+        }
+    </div>
+</div>
+@code {
+    [Parameter] public ProductCardVM Product { get; set; } = new();
+    
+    public class ProductCardVM
+    {
+        public ProductCardVM()
+        {
+            RatingCount = Random.Shared.Next(999);
+            RatingRate = Random.Shared.Next(100);
+        }
+        public int ID { get; set; }
+        public List<ProductCardLabelVM> Labels { get; set; } = [];
+        public bool IsInCart { get; set; }
+        public bool IsInWishList { get; set; }
+        public bool ShowRating { get; set; }
+        public string[] Colors { get; set; } = [];
+        public string Link { get; set; } = string.Empty;
+        public string Image { get; set; } = string.Empty;
+        public int Version { get; set; }
+        public string Name { get; set; } = string.Empty;
+
+        public int BrandID { get; set; }
+        public string BrandName { get; set; } = string.Empty;
+
+        public int VendorID { get; set; }
+        public string VendorName { get; set; } = string.Empty;
+
+        public decimal OldPrice { get; set; }
+        public decimal Price { get; set; }
+
+        public int RatingCount { get; set; }
+        public int RatingRate { get; set; }
+    }
+
+    public class ProductCardLabelVM
+    {
+        public string Text { get; set; } = string.Empty;
+        public string FColor { get; set; } = string.Empty;
+        public string BColor { get; set; } = string.Empty;
+    }
+}

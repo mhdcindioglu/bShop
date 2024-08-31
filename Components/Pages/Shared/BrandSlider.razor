@@ -1,0 +1,31 @@
+﻿@inject IJSRuntime JS
+@rendermode InteractiveServer
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="section-heading">
+                <h3 class="title">@Resource.ShopByBrands</h3>
+            </div>
+        </div>
+        <div class="row banner-slider owl-carousel caro-common">
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-1.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-2.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-3.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-4.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-5.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-6.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-7.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-8.png" alt=""></a></div></div>
+            <div class="col-lg-12"><div class="brand-card"><a href="/"><img src="imgs/brands/brand-9.png" alt=""></a></div></div>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JS.InvokeVoidAsync("bannerSlider");
+    }
+}

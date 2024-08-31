@@ -1,0 +1,25 @@
+﻿@inject IJSRuntime JS
+@rendermode InteractiveServer
+
+<div class="slider-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 offset-lg-3">
+                <div class="home-slider owl-carousel d-block">
+                    <div class="slider-item"><a href="/"><img src="imgs/sliders/slider-1.jpg" alt=""></a></div>
+                    <div class="slider-item"><a href="/"><img src="imgs/sliders/slider-2.jpg" alt=""></a></div>
+                    <div class="slider-item"><a href="/"><img src="imgs/sliders/slider-3.jpg" alt=""></a></div>
+                    <div class="slider-item"><a href="/"><img src="imgs/sliders/slider-4.jpg" alt=""></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JS.InvokeVoidAsync("homeSlider");
+    }
+}

@@ -1,0 +1,41 @@
+﻿<header id="sticky-header" class="header">
+    <div class="header-area">
+        <div class="container">
+            <div class="navbar-content">
+                <ul class="head-round-icon">
+                    <li class="off-canvas-btn"><a href="javascript:void(0);"><i class="bi bi-list"></i></a></li>
+                    <li class="off-canvas-btn"><a href="javascript:void(0);"><i class="bi bi-search"></i></a></li>
+                </ul>
+                <div class="navbar-logo">
+                    <a href="/">
+                        <img src="imgs/200x200-logo.png" alt="logo">
+                    </a>
+                </div>
+                <div class="header-search">
+                    <form method="GET" action="/search">
+                        <input name="search" type="text" class="form-control" placeholder="@Resource.PlaceHolder_SearchForProducts" required="">
+                        <button type="submit" class="btn btn-search"><i class="bi bi-search"></i>@Resource.Search</button>
+                    </form>
+                </div>
+                <ul class="head-round-icon">
+                    <li>
+                        <a href="/wishlist">
+                            <i class="bi bi-heart"></i>
+                            <span class="cart_count count_wishlist">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar_show_hide">
+                            <i class="bi bi-cart"></i>
+                            <span class="cart_count total_qty">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+@code {
+
+}
