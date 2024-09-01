@@ -187,11 +187,38 @@ namespace bShop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 56 King Street, New York.
+        ///   Looks up a localized string similar to bShop Street, Our City.
         /// </summary>
         public static string BShop_Address {
             get {
                 return ResourceManager.GetString("BShop_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to support@bshop.com.
+        /// </summary>
+        public static string BShop_Email {
+            get {
+                return ResourceManager.GetString("BShop_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://facebook.com/bshop.
+        /// </summary>
+        public static string BShop_FacebookLink {
+            get {
+                return ResourceManager.GetString("BShop_FacebookLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://instagram.com/bshop.
+        /// </summary>
+        public static string BShop_InstagramLink {
+            get {
+                return ResourceManager.GetString("BShop_InstagramLink", resourceCulture);
             }
         }
         
@@ -201,6 +228,24 @@ namespace bShop.Resources {
         public static string BShop_PhoneNumber {
             get {
                 return ResourceManager.GetString("BShop_PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://twitter.com/bshop.
+        /// </summary>
+        public static string BShop_TwitterLink {
+            get {
+                return ResourceManager.GetString("BShop_TwitterLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://youtube.com/bshop.
+        /// </summary>
+        public static string BShop_YoutubeLink {
+            get {
+                return ResourceManager.GetString("BShop_YoutubeLink", resourceCulture);
             }
         }
         
@@ -1110,15 +1155,6 @@ namespace bShop.Resources {
         public static string SeoCode {
             get {
                 return ResourceManager.GetString("SeoCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to bShop Street, Our City.
-        /// </summary>
-        public static string Shop_Address {
-            get {
-                return ResourceManager.GetString("Shop_Address", resourceCulture);
             }
         }
         

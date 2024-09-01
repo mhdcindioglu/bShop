@@ -1,5 +1,5 @@
 ﻿<div class="col-lg-12">
-    <div class="item-card mb30">
+    <div class="item-card mb@(MB)">
         <div class="item-image">
             <ul class="labels-list">
                 @foreach (var lbl in Product.Labels)
@@ -45,6 +45,7 @@
 </div>
 @code {
     [Parameter] public ProductCardVM Product { get; set; } = new();
+    [Parameter] public int MB { get; set; } = 30;
     
     public class ProductCardVM
     {
