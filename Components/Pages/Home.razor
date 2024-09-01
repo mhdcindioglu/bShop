@@ -1,12 +1,28 @@
 ﻿@page "/"
+@using static bShop.Components.Pages.Shared.ProductCard
 
 <PageTitle>Home</PageTitle>
 
 <HomeSlider />
 <Banner />
 <BrandSlider />
-<NewProductsSlider />
-<TrendingProducts />
-<BestSellers />
-<AvailableOffer />
+
+<ProductsSlider Title="@Resource.NewArrivals" SeeAllLink="/" Products="Products" CssClass="new-arrivals-carousel" />
+<ProductsSlider Title="@Resource.TrendingProducts" SeeAllLink="/" Products="Products" CssClass="trending-products-carousel" />
+<ProductsSlider Title="@Resource.BestSellers" SeeAllLink="/" Products="Products" CssClass="best-sellers-carousel" />
+<ProductsSlider Title="@Resource.AvailableOffer" SeeAllLink="/" Products="Products" CssClass="available-offer-carousel" />
+<ProductsSlider Title="@Resource.AvailableOffer" SeeAllLink="/" Products="Products" CssClass="available-offer-carousel" />
+
 <Trending />
+
+@code{
+    ProductCardVM[] Products =
+    [
+    new ProductCardVM(){ ID = 6, ShowRating = false, Name = "Yellow (VF1100C V65)", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-6.jpg", Price = 5500, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#e7a202"], },
+    new ProductCardVM(){ ID = 7, ShowRating = false, Name = "Blue Gixxer SF", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-7.jpg", Price = 5500, Labels = [], Colors = ["#10c4e4"], },
+    new ProductCardVM(){ ID = 8, ShowRating = false, Name = "White Gixxer", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-8.jpg", Price = 8500, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#c8c8c8"], },
+    new ProductCardVM(){ ID = 9, ShowRating = false, Name = "Celeron N4020 HD Laptop", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-9.jpg", Price = 975, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#dd0e14", "#7a6fec"], },
+    new ProductCardVM(){ ID = 10, ShowRating = false, Name = "IdeaPad Slim HD Laptop", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-10.jpg", Price = 1250, Labels = [], Colors = ["#dd0e14", "#7a6fec"], },
+    new ProductCardVM(){ ID = 11, ShowRating = false, Name = "Phone 11 Lite 5G NE", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-11.jpg", Price = 550, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = ["#dd0e14", "#7a6fec"], },
+    ];
+}
