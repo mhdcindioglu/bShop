@@ -556,6 +556,15 @@ namespace bShop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hot.
         /// </summary>
         public static string Hot {
@@ -1083,6 +1092,15 @@ namespace bShop.Resources {
         public static string Registering {
             get {
                 return ResourceManager.GetString("Registering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Related Products.
+        /// </summary>
+        public static string RelatedProducts {
+            get {
+                return ResourceManager.GetString("RelatedProducts", resourceCulture);
             }
         }
         

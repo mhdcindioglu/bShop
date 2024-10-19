@@ -1,0 +1,40 @@
+﻿@SidebarWrapper
+<!--Top Navbar-->
+<nav class="navbar-expand-lg navbar tp-header">
+	<span class="menu-toggler" id="menu-toggle" @onclick="MenuToggle">
+		<span class="line"></span>
+	</span>
+	<a href="https://www.bshopen.themeposh.net" target="_blank" class="view_website">View Website</a>
+	<div class="dropdown ms-auto mt-0 mt-lg-0">
+		<a href="javascript:void(0);" class="my-profile-info" data-toggle="dropdown">
+			<div class="avatar">
+				<img src="https://www.bshopen.themeposh.net/public/media/06082021041147-photo.png">
+			</div>
+			<div class="my-profile">
+				<span>Admin</span>
+				<span>admin@themeposh.xyz</span>
+			</div>
+		</a>
+		<div class="dropdown-menu dropdown-menu-right my-profile-nav">
+			<a class="dropdown-item" href="https://www.bshopen.themeposh.net/backend/profile">Profile</a>
+
+			<a class="dropdown-item" href="https://www.bshopen.themeposh.net/logout" onclick="event.preventDefault();
+				document.getElementById('logout-form').submit();">
+				Logout
+			</a>
+			<form id="logout-form" action="https://www.bshopen.themeposh.net/logout" method="POST" class="d-none">
+				<input type="hidden" name="_token" value="RgFARfRabi0HYoC5qX2l6enzdW2Tea23ec1OqSUW">
+			</form>
+		</div>
+	</div>
+</nav>			<!--/Top Navbar/-->
+@code {
+	[Parameter] public EventCallback<bool> OnSidebarWrapper { get; set; }
+	bool SidebarWrapper;
+
+	async void MenuToggle()
+	{
+		SidebarWrapper = !SidebarWrapper;
+		await OnSidebarWrapper.InvokeAsync(SidebarWrapper);
+	}
+}

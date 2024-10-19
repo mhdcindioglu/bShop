@@ -603,4 +603,10 @@
   <data name="BShop_InstagramLink" xml:space="preserve">
     <value>https://instagram.com/bshop</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="RelatedProducts" xml:space="preserve">
+    <value>Related Products</value>
+  </data>
 </root>

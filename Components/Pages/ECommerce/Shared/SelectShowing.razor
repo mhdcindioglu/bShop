@@ -1,0 +1,29 @@
+﻿@using bShop.Data.Enums
+@inherits InputSelect<Showing>
+<div class="dropdown">
+    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="d-flex">
+            @((int)Value)
+            <i class="fa-solid fa-angle-down ms-auto my-1"></i>
+        </span>
+    </button>
+    <ul class="dropdown-menu">
+        @foreach (var item in Enum.GetValues<Showing>())
+        {
+            <li><button class="dropdown-item @((int)item == (int)Value ? "active" : null)" @onclick="@(() => Changed(item))">@((int)item)</button></li>
+        }
+    </ul>
+</div>
+<style>
+    .filter-card .filter_select .dropdown > button.dropdown-toggle::after {
+        display: none;
+    }
+</style>
+@code {
+    string id = Guid.NewGuid().ToString();
+    async Task Changed(Showing val)
+    {
+        Value = val;
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

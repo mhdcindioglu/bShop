@@ -1,24 +1,26 @@
-﻿@using static bShop.Components.Pages.Shared.ProductCard
-@inject IJSRuntime JS
+﻿@inject IJSRuntime JS
 @rendermode InteractiveServer
 
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <div class="section-heading">
-                <h3 class="title">@Title</h3>
-                <a class="btn theme-btn seeall-btn" href="@SeeAllLink">@Resource.SeeAll</a>
+@if (Products.Length > 0)
+{
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="section-heading">
+                    <h3 class="title">@Title</h3>
+                    <a class="btn theme-btn seeall-btn" href="@SeeAllLink">@Resource.SeeAll</a>
+                </div>
+            </div>
+
+            <div class="row owl-carousel caro-common @CssClass">
+                @foreach (var prd in Products)
+                {
+                    <ProductCard Product="prd" />
+                }
             </div>
         </div>
-
-        <div class="row owl-carousel caro-common @CssClass">
-            @foreach (var prd in Products)
-            {
-                <ProductCard Product="prd" />
-            }
-        </div>
     </div>
-</div>
+}
 
 @code {
     [Parameter] public required string Title { get; set; }

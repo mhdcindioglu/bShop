@@ -1,4 +1,6 @@
-﻿@using static Microsoft.AspNetCore.Components.Web.RenderMode
+﻿@inject IToastService ToastSrv
+
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
 @using System.Net.Http
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components.Forms
@@ -13,4 +15,10 @@
 @using bShop.Components.Layout
 @using bShop.Components.Layout.Shared
 @using bShop.Components.Pages.Shared
+@using bShop.Data.ViewModels
+@using bShop.Data.Services
 @using bShop.Resources
+
+@using Blazored.Toast
+@using Blazored.Toast.Services
+@using bShop.Data.Extensions

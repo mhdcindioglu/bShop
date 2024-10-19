@@ -35,6 +35,22 @@
     {
       "library": "jquery.nicescroll@3.7.6",
       "destination": "wwwroot/libs/jquery.nicescroll/"
+    },
+    {
+      "library": "jqueryui@1.14.0",
+      "destination": "wwwroot/libs/jqueryui/"
+    },
+    {
+      "library": "parsley.js@2.9.2",
+      "destination": "wwwroot/libs/parsley.js/"
+    },
+    {
+      "library": "chosen@1.8.7",
+      "destination": "wwwroot/libs/chosen/"
+    },
+    {
+      "library": "jquery-popup-overlay@2.1.5",
+      "destination": "wwwroot/libs/jquery-popup-overlay/"
     }
   ]
 }

@@ -1,11 +1,48 @@
 ﻿@inherits LayoutComponentBase
 
-<NewsletterModal />
-<TopHeader />
-<Header />
-@* <CatMenuBar /> *@
+@using Blazored.Toast.Configuration
+@using Microsoft.AspNetCore.Components.Sections
+
+<HeadContent>
+    <link rel="stylesheet" href="@Assets["libs/bootstrap/css/bootstrap.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/owl.carousel/dist/assets/owl.carousel.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/gritter/css/jquery.gritter.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/sweetalert2/sweetalert2.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/font-awesome/css/all.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/bootstrap-icons/font/bootstrap-icons.min.css"]" />
+    <link rel="stylesheet" href="@Assets["css/app.css"]" />
+    <link rel="stylesheet" href="@Assets["css/style.css"]" />
+    <link rel="stylesheet" href="@Assets["css/responsive.css"]" />
+</HeadContent>
+
+<SectionContent SectionName="Scripts">
+    <script src="libs/jquery/jquery.min.js"></script>
+    <script src="libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="libs/owl.carousel/dist/owl.carousel.min.js"></script>
+    <script src="libs/gritter/js/jquery.gritter.min.js"></script>
+    <script src="libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="libs/font-awesome/js/all.min.js"></script>
+    <script src="libs/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="js/app.js"></script>
+</SectionContent>
+
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="10"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+<_NewsletterModal />
+
+<_TopHeader />
+<_Header />
+<_CatMenuBar HideCategories="true" /> 
 <main>
     @Body
 </main>
-<Footer />
-<ShoppingCart />
+<_Footer />
+<_ShoppingCart />
+
+<a href="#top" class="scroll-to-top" style="display: inline-block;">
+    <i class="bi bi-arrow-up"></i>
+</a>

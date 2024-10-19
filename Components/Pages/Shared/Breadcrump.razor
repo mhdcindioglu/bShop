@@ -1,0 +1,28 @@
+﻿<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="page-title">
+                    <h1>@Title</h1>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">@Resource.Home</a></li>
+                        @if (!string.IsNullOrEmpty(CategoryTitle))
+                        {
+                            <li class="breadcrumb-item" aria-current="page"><a href="@CategoryLink">@CategoryTitle</a></li>
+                        }
+                        <li class="breadcrumb-item active" aria-current="page">@Title</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public string? CategoryTitle { get; set; }
+    [Parameter] public string? CategoryLink { get; set; }
+    [Parameter] public required string Title { get; set; }
+}

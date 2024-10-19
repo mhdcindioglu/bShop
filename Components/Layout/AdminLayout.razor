@@ -1,0 +1,55 @@
+﻿@inherits LayoutComponentBase
+
+@using Blazored.Toast.Configuration
+@using Microsoft.AspNetCore.Components.Sections
+@using bShop.Components.Pages.Admin.Shared
+
+<HeadContent>
+    <style type="text/css">
+        :root {
+            --backend-theme-color: #7c70f2;
+        }
+    </style>
+    <link rel="stylesheet" href="@Assets["libs/bootstrap/css/bootstrap.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/sweetalert2/sweetalert2.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/font-awesome/css/all.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/bootstrap-icons/font/bootstrap-icons.min.css"]" />
+    <link rel="stylesheet" href="@Assets["css/bootstrap-chosen.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/gritter/css/jquery.gritter.min.css"]" />
+    <link rel="stylesheet" href="@Assets["libs/jqueryui/themes/base/jquery-ui.min.css"]" />
+    <link rel="stylesheet" href="@Assets["css/style-admin.css"]" />
+    <link rel="stylesheet" href="@Assets["css/responsive.css"]" />
+    <link rel="stylesheet" href="@Assets["css/app-admin.css"]" />
+</HeadContent>
+
+<SectionContent SectionName="Scripts">
+    <script src="libs/jquery/jquery.min.js"></script>
+    <script src="libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="libs/font-awesome/js/all.min.js"></script>
+    <script src="libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="libs/jqueryui/jquery-ui.min.js"></script>
+    <script src="libs/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="js/jquery.gritter.min.js"></script>
+    <script src="js/app-admin.js"></script>
+</SectionContent>
+
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="10"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug" />
+
+<div id="wrapper" class="d-flex relative @(SidebarWrapper ? "toggled" : null)">
+    <_Sidebar />
+    <div id="page-content-wrapper">
+        <_TopNavbar OnSidebarWrapper="@((val) => SidebarWrapper = val)" />
+        <main>
+            @Body
+        </main>
+    </div>
+</div>
+
+@code{
+    bool SidebarWrapper;
+}

@@ -1,0 +1,66 @@
+﻿<footer class="border-top">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <div class="footer-widget mb10">
+                        <h4 class="widget-title">@Resource.ContactUs</h4>
+                        <ul class="widget-contact">
+                            <li><strong>@Resource.Address:</strong> @Resource.BShop_Address</li>
+
+                            <li><strong>@Resource.Email:</strong> @Resource.BShop_Email</li>
+
+                            <li><strong>@Resource.Phone:</strong> @Resource.BShop_PhoneNumber</li>
+                        </ul>
+                    </div>
+                    <div class="social-media mb25">
+                        <a href="@Resource.BShop_FacebookLink" target="_blank"><i class="bi bi-facebook"></i></a>
+                        <a href="@Resource.BShop_TwitterLink" target="_blank"><i class="bi bi-twitter"></i></a>
+                        <a href="@Resource.BShop_InstagramLink" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="@Resource.BShop_YoutubeLink" target="_blank"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <div class="footer-widget mb25">
+                        <h4 class="widget-title">@Resource.QuickLinks</h4>
+                        <ul class="widget-list">
+                            <li><a href="/privacy-policy">@Resource.PrivacyPolicy</a></li>
+                            <li><a href="/terms-and-conditions">@Resource.TermsAndConditions</a></li>
+                            <li><a href="/purchasing-policy">@Resource.PurchasingPolicy</a></li>
+                            <li><a href="/cookie-policy">@Resource.CookiePolicy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <div class="footer-widget mb25">
+                        <h4 class="widget-title">@Resource.Company</h4>
+                        <ul class="widget-list">
+                            <li><a href="/about-us">@Resource.AboutUs</a></li>
+                            <li><a href="/career">@Resource.Career</a></li>
+                            <li><a href="/affiliate">@Resource.Affiliate</a></li>
+                            <li><a target="_blank" href="https://api.whatsapp.com/send/?phone=@($"{Resource.BShop_PhoneNumber.Replace("+","").Replace(" ","")}")&amp;text=Hello+I+have+a+query&amp;app_absent=0">@Resource.ContactUs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <FooterSubscribe />
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="copy-right">
+                        @Resource.Copyright © @(DateTime.UtcNow.ToLocalTime().Year). @Resource.AllRightsReservedBy <a href="#">bShop</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="payment-method">
+                        <img src="imgs/payment.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

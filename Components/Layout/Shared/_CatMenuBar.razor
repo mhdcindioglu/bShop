@@ -1,0 +1,125 @@
+﻿@inject ICategoryService CategorySrv
+
+<div class="header-menu">
+    <div class="container">
+        <div class="row">
+            @if (!HideCategories)
+            {
+                <div class="col-lg-3">
+                    <div class="categories_wrap">
+                        <div class="banner-cate-heading">
+                            <i class="bi bi-list"></i>@Resource.TopCategories
+                        </div>
+                        <div class="nav_cat_content" style="overflow: auto; outline: none;" tabindex="1">
+                            <ul class="banner-category-list">
+                                <_CategoriesList Categories="Categories" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="@(HideCategories ? " col-lg-12" : "col-lg-9")">
+                <div class="tp-mega-full">
+                    <div class="tp-menu align-self-center">
+                        <nav>
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li class="tp-static">
+                                    <a href="#">Mega Menu</a><div class="mega-menu mega-full">
+                                        <ul class="mega-col-3 ">
+                                            <li><a href="//brand/44/ca-brand">CA Brand</a></li>
+                                            <li><a href="//brand/43/pakha-brand">Pakha Brand</a></li>
+                                            <li><a href="//brand/36/roadstar">Roadstar</a></li>
+                                        </ul><ul class="mega-col-3 ">
+                                            <li><a href="//brand/34/af-brand">AF-Brand</a></li>
+                                            <li><a href="//brand/33/d-brand">D Brand</a></li>
+                                            <li><a href="//brand/32/smartphone">Smartphone</a></li>
+                                        </ul><ul class="mega-col-3 ">
+                                            <li><a href="//brand/30/footwear">Footwear</a></li>
+                                            <li><a href="//brand/29/abukaka">Abukaka</a></li>
+                                            <li><a href="//brand/20/abu-brand">Abu Brand</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="#">Mega Fixed Width</a><div class="mega-menu" style="width:400px;">
+                                        <ul class="megafixed-col-2 ">
+                                            <li><a href="//product-category/14/accessories">Accessories</a></li>
+                                            <li><a href="//product-category/13/health-beauty">Health And Beauty</a></li>
+                                            <li><a href="//product-category/12/tv-videos">TV &amp; Videos</a></li>
+                                            <li><a href="//product-category/11/jewelry-watch">Jewelry &amp; Watch</a></li>
+                                            <li><a href="//product-category/10/shoes">Shoes</a></li>
+                                        </ul><ul class="megafixed-col-2 ">
+                                            <li><a href="//product-category/9/fan">Fan</a></li>
+                                            <li><a href="//product-category/8/motor-bike">Motor Bike</a></li>
+                                            <li><a href="//product-category/7/wireless-speakers">Wireless Speakers</a></li>
+                                            <li><a href="//product-category/6/headphones">Headphones</a></li>
+                                            <li><a href="//product-category/5/camera">Camera</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a href="#">Dropdown</a><ul class="submenu"><li><a href="//product-category/4/laptop">Laptop</a></li><li><a href="//product-category/3/monitor">Monitor</a></li><li><a href="//product-category/2/computer">Computer</a></li><li><a href="//product-category/1/mobile">Mobile</a></li></ul></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* add 'open' class top open *@
+<aside class="mobile-menu-wrapper ">
+    <div class="off-canvas-overlay"></div>
+    <div class="offcanvas-body">
+        <div class="offcanvas-top">
+            <div class="offcanvas-btn-close">
+                <i class="bi bi-x-lg"></i>
+            </div>
+        </div>
+        <div class="search-for-mobile">
+            <form method="GET" action="//search">
+                <input name="search" type="text" class="form-control" placeholder="Search for Products" required="">
+                <button type="submit" class="btn theme-btn"><i class="bi bi-search"></i>Search</button>
+            </form>
+        </div>
+        <div class="mobile-navigation">
+            <nav>
+                <ul class="mobile-menu">
+                    <li class="has-children-menu">
+                        <span class="menu-expand"><i></i></span><a href="#">Top Categories</a>
+                        <ul class="dropdown" style="display: none;">
+                            <_CategoriesList Categories="Categories" />
+                        </ul>
+                    </li>
+                    <li><a href="/">Home</a></li>
+                    <li class="has-children-menu"><span class="menu-expand"><i></i></span><a href="#">Mega Menu</a><ul class="dropdown" style="display: none;"><li><a href="//brand/44/ca-brand">CA Brand</a></li><li><a href="//brand/43/pakha-brand">Pakha Brand</a></li><li><a href="//brand/36/roadstar">Roadstar</a></li><li><a href="//brand/34/af-brand">AF-Brand</a></li><li><a href="//brand/33/d-brand">D Brand</a></li><li><a href="//brand/32/smartphone">Smartphone</a></li><li><a href="//brand/30/footwear">Footwear</a></li><li><a href="//brand/29/abukaka">Abukaka</a></li><li><a href="//brand/20/abu-brand">Abu Brand</a></li></ul></li>
+                    <li class="has-children-menu"><span class="menu-expand"><i></i></span><a href="#">Mega Fixed Width</a><ul class="dropdown" style="display: none;"><li><a href="//product-category/14/accessories">Accessories</a></li><li><a href="//product-category/13/health-beauty">Health And Beauty</a></li><li><a href="//product-category/12/tv-videos">TV &amp; Videos</a></li><li><a href="//product-category/11/jewelry-watch">Jewelry &amp; Watch</a></li><li><a href="//product-category/10/shoes">Shoes</a></li><li><a href="//product-category/9/fan">Fan</a></li><li><a href="//product-category/8/motor-bike">Motor Bike</a></li><li><a href="//product-category/7/wireless-speakers">Wireless Speakers</a></li><li><a href="//product-category/6/headphones">Headphones</a></li><li><a href="//product-category/5/camera">Camera</a></li></ul></li>
+                    <li class="has-children-menu"><span class="menu-expand"><i></i></span><a href="#">Dropdown</a><ul class="dropdown" style="display: none;"><li><a href="//product-category/4/laptop">Laptop</a></li><li><a href="//product-category/3/monitor">Monitor</a></li><li><a href="//product-category/2/computer">Computer</a></li><li><a href="//product-category/1/mobile">Mobile</a></li></ul></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+@code {
+    [Parameter] public bool HideCategories { get; set; }
+    PageList<CategoryVM> Categories = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCategories();
+    }
+
+    async Task GetCategories()
+    {
+        try
+        {
+            Categories = [.. await CategorySrv.GetAllAsync<CategoryVM>(null)];
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.Message);
+        }
+    }
+}

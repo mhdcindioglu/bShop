@@ -2595,13 +2595,35 @@ ul.widget-size {
 }
 
     .filter-card .filter_select select,
-    .filter-card .sort_by_select select {
+    .filter-card .sort_by_select select,
+    .filter-card .filter_select .dropdown > button,
+    .filter-card .sort_by_select .dropdown > button {
         width: 120px;
     }
 
-    .filter-card .sort_by_select select {
+    .filter-card .sort_by_select select,
+    .filter-card .sort_by_select .dropdown > button {
         float: right;
     }
+
+    .filter-card .filter_select .dropdown > button,
+    .filter-card .sort_by_select .dropdown > button {
+        text-align: start;
+        padding: 8px 10px;
+        -webkit-border-radius: 0px;
+        border-radius: 0px;
+        border: 1px solid #dddddd;
+        height: auto;
+        color: #222;
+        font-size: 14px;
+    }
+
+        .filter-card .filter_select .dropdown > button:hover,
+        .filter-card .sort_by_select .dropdown > button:hover {
+            color: unset;
+            background-color: unset;
+            box-shadow: unset !important;
+        }
 
 .sidebar .widget ul.checkbox-list {
 }
@@ -3579,3 +3601,23 @@ button.my-profile-info {
     border: unset;
     background-color: unset;
 }
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }

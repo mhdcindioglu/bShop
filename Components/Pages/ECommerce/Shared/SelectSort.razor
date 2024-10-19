@@ -1,0 +1,38 @@
+﻿@using bShop.Data.Enums
+@inherits InputSelect<Sort>
+<div class="dropdown">
+    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="d-flex">
+            @SortTitle(Value)
+            <i class="fa-solid fa-angle-down ms-auto my-1"></i>
+        </span>
+    </button>
+    <ul class="dropdown-menu">
+        @foreach (var item in Enum.GetValues<Sort>())
+        {
+            <li><button class="dropdown-item @((int)item == (int)Value ? "active" : null)" @onclick="@(() => Changed(item))">@SortTitle(item)</button></li>
+        }
+    </ul>
+</div>
+<style>
+    .filter-card .sort_by_select .dropdown > button.dropdown-toggle::after {
+        display: none;
+    }
+</style>
+@code {
+    string id = Guid.NewGuid().ToString();
+    string SortTitle(Sort sort) => sort switch
+    {
+        Sort.Default => "Default",
+        Sort.DateAsc => "Oldest",
+        Sort.DateDesc => "Newest",
+        Sort.NameAsc => "Name: A-Z",
+        Sort.NameDesc => "Name : Z-A",
+        _ => "",
+    };
+    async Task Changed(Sort val)
+    {
+        Value = val;
+        await ValueChanged.InvokeAsync(Value);
+    }
+}
