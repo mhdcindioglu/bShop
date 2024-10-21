@@ -17,8 +17,7 @@ public class Product : IUniqueEntity<int>
     public string ShortDesc { get; set; } = string.Empty;
     public string LongDesc { get; set; } = string.Empty;
 
-    public string? Image { get; set; }
-    public int? Version { get; set; }
+    public string Colors { get; set; } = string.Empty;
 
     public int VendorID { get; set; }
     public virtual Vendor? Vendor { get; set; }
@@ -45,4 +44,6 @@ public class Product : IUniqueEntity<int>
     public DateTime? OfferEndDate { get; set; }
     
     public DateTime CreationDate { get; set; }
+    
+    public virtual List<Image> Images { get; set; } = [];
 }

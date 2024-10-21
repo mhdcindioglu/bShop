@@ -1,4 +1,6 @@
-﻿namespace bShop.Data.ViewModels;
+﻿using bShop.Data.Entities;
+
+namespace bShop.Data.ViewModels;
 
 public class ProductCardVM
 {
@@ -15,11 +17,9 @@ public class ProductCardVM
     
     public bool IsInCart { get; set; }
     public bool IsInWishList { get; set; }
-    public bool ShowRating { get; set; }
-    public string[] Colors { get; set; } = [];
+    public bool ShowRating { get; set; } = true;
+    public string Colors { get; set; } = string.Empty;
     public string Link => $"/Product/{Id}/{Slug}";
-    public string Image { get; set; } = string.Empty;
-    public int Version { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
 
@@ -29,9 +29,10 @@ public class ProductCardVM
     public int VendorID { get; set; }
     public string VendorName { get; set; } = string.Empty;
 
-    public decimal OldPrice { get; set; }
-    public decimal Price { get; set; }
+    public decimal SalePrice { get; set; }
+    public decimal OfferPrice { get; set; }
 
     public int RatingCount { get; set; }
     public int RatingRate { get; set; }
+    public List<Image> Images { get; set; } = [];
 }

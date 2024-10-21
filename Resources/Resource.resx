@@ -609,4 +609,7 @@
   <data name="RelatedProducts" xml:space="preserve">
     <value>Related Products</value>
   </data>
+  <data name="BShop_AppTitle" xml:space="preserve">
+    <value>bShop</value>
+  </data>
 </root>

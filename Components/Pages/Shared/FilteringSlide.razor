@@ -9,7 +9,7 @@
             <h5 class="widget-title">Filter by Category</h5>
             <div class="checkboxlist">
                 <ul class="checkbox-list">
-                    @foreach (var category in Model.Categories)
+                    @foreach (var category in Model.Categories.Where(x => x.ProductsCount > 0))
                     {
                         <li>
                             <label class="checkbox-title">
@@ -27,7 +27,7 @@
             <h5 class="widget-title">Filter by Brand</h5>
             <div class="checkboxlist">
                 <ul class="checkbox-list">
-                    @foreach (var brand in Model.Brands)
+                    @foreach (var brand in Model.Brands.Where(x => x.ProductsCount > 0))
                     {
                         <li>
                             <label class="checkbox-title">

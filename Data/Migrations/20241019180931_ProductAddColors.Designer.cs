@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bShop.Data;
 
@@ -11,9 +12,11 @@ using bShop.Data;
 namespace bShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20241019180931_ProductAddColors")]
+    partial class ProductAddColors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,32 +222,6 @@ namespace bShop.Migrations
                     b.ToTable("Collections");
                 });
 
-            modelBuilder.Entity("bShop.Data.Entities.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Version")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Image");
-                });
-
             modelBuilder.Entity("bShop.Data.Entities.Label", b =>
                 {
                     b.Property<int>("Id")
@@ -296,6 +273,9 @@ namespace bShop.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("LabelId")
                         .HasColumnType("int");
 
@@ -332,6 +312,9 @@ namespace bShop.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VendorID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Version")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -552,17 +535,6 @@ namespace bShop.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bShop.Data.Entities.Image", b =>
-                {
-                    b.HasOne("bShop.Data.Entities.Product", "Product")
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("bShop.Data.Entities.Product", b =>
                 {
                     b.HasOne("bShop.Data.Entities.Brand", "Brand")
@@ -624,11 +596,6 @@ namespace bShop.Migrations
             modelBuilder.Entity("bShop.Data.Entities.Label", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("bShop.Data.Entities.Product", b =>
-                {
-                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("bShop.Data.Entities.Vendor", b =>

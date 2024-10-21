@@ -153,6 +153,24 @@ function productsSlider(className) {
     });
 }
 
+function productImageSlider(className) {
+    $(className).owlCarousel({
+        navText: ['<i class="bi bi-arrow-left"></i>', '<i class="bi bi-arrow-right"></i>'],
+        rtl: false,
+        loop: true,
+        nav: true,
+        dots: true,
+        margin: 25,
+        mouseDrag: true,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1
+            }
+        }
+    });
+}
+
 function scrollToTop() {
     document.documentElement.scrollTop = 0;
 }

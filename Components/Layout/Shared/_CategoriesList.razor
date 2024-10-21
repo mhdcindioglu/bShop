@@ -1,4 +1,5 @@
-﻿@foreach (var category in Categories)
+﻿<li><a href="/Products" class="fw-bold">Products</a></li>
+@foreach (var category in Categories)
 {
     <li><a href="/@(category.Slug)/Products">@(category.Name)</a></li>
 }

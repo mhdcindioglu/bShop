@@ -13,7 +13,9 @@ public static class QueryableExtensions
     {
         PageList<VM> result = [];
 
-        if(filter == null)
+        result.AllCount = await qry.CountAsync();
+
+        if (filter == null)
             result.AddRange(await qry.ProjectTo<VM>().ToListAsync());
         else
         {

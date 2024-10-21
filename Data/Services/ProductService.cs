@@ -8,15 +8,18 @@ using static bShop.Components.Pages.ECommerce.ProductsPage;
 
 namespace bShop.Data.Services;
 
-public class ProductService(ICategoryService CategorySrv, IBrandService BrandSrv) : Repository<int, Product>(DbFactory), IProductService
+public class ProductService(IDbContextFactory<ShopContext> DbFactory, ICategoryService CategorySrv, IBrandService BrandSrv) : Repository<int, Product>(DbFactory), IProductService
 {
-    public static required IDbContextFactory<ShopContext> DbFactory;
-
     public async Task<PageList<ProductCardVM>> GetAllAsync(ProductsFilter filter)
     {
         using var db = await DbFactory.CreateDbContextAsync();
-        var qry = db.Products
-            .Where(x => filter.Categories.SelectedItems().Length == 0 || filter.Categories.SelectedItems().Select(x => x.Id).Contains(x.CategoryId));
+        var qry = db.Products.Include(x => x.Images).AsNoTracking();
+
+        if (filter.Categories.SelectedItems().Length > 0)
+            qry = qry.Where(x => filter.Categories.SelectedItems().Select(x => x.Id).Contains(x.CategoryId));
+
+        if (filter.Brands.SelectedItems().Length > 0)
+            qry = qry.Where(x => filter.Brands.SelectedItems().Select(x => x.Id).Contains(x.BrandID));
 
         qry = filter.Sort switch
         {
@@ -40,12 +43,15 @@ public class ProductService(ICategoryService CategorySrv, IBrandService BrandSrv
         model.Brands = await BrandSrv.GetAllAsync<BrandVM>();
         model.Brands.Select(selectedBrands.Select(x => x.Id).ToArray());
 
+        model.Categories.ForEach(category => category.Selected = category.Slug.Equals(model.Slug, StringComparison.CurrentCultureIgnoreCase));
+
         model.Products = await GetAllAsync(new ProductsFilter { Categories = model.Categories, Brands = model.Brands, CurrentPage = model.CurrentPage, Showing = model.Showing, Sort = model.Sort, });
+        model.AllItems = model.Products.AllCount;
         return model;
     }
 }
 
-public interface IProductService : IRepository<int, Product>
+public interface IProductService
 {
     Task<PageList<ProductCardVM>> GetAllAsync(ProductsFilter filter);
     Task<ProductsPageModel> GetProductsPageModel(ProductsPageModel model);

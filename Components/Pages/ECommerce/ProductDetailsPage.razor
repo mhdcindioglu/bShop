@@ -1,8 +1,9 @@
 ﻿@page "/ProductDetails/{Id:int}/{Slug}"
+@using bShop.Data.Entities
 
 @layout NoCategoriesLayout
 
-<Breadcrump Title="@(Product.Name)" CategoryTitle="@(Product.Category.Name)" CategoryLink="@($"/Category/{Product.CategoryId}/{Product.Category.Slug}")" />
+<Breadcrump Title="@(Product.Name)" CategoryTitle="@(Product.Category?.Name)" CategoryLink="@($"/Category/{Product.CategoryId}/{Product.Category?.Slug}")" />
 
 <div class="inner-section">
 	<div class="container">
@@ -72,7 +73,7 @@
 					<div class="pr_extra"><strong>SKU:</strong>  TP-354125</div>
 
 					<div class="product_price">
-						<div class="item-price">@($"{Product.Price:C2}")</div>
+						<div class="item-price">@($"{Product.OfferPrice:C2}")</div>
 					</div>
 					<div class="pr_widget">
 						<label class="widget-title">Color<span class="red">*</span></label>
@@ -214,8 +215,9 @@
 <ProductsSlider Title="@Resource.RelatedProducts" SeeAllLink="/" Products="RelatedProducts" CssClass="related-products-carousel" />
 
 @code {
-	[Parameter] public required int Id { get; set; }
-	[Parameter] public required string Slug { get; set; }
-	ProductCardVM Product = new ProductCardVM() { Id = 7, ShowRating = false, Name = "Blue Gixxer SF", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Image = "product-7.jpg", Price = 5500, Labels = [], Colors = ["#10c4e4"], };
-	ProductCardVM[] RelatedProducts = [];
+		[Parameter] public required int Id { get; set; }
+		[Parameter] public required string Slug { get; set; }
+		ProductCardVM Product = new ProductCardVM() { Id = 7, ShowRating = false, Name = "Blue Gixxer SF", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Images = [ new Image { Name = "product-7.jpg" }], OfferPrice = 5500, Labels = [], Colors = "#10c4e4;#ee00ff;", 
+};
+		ProductCardVM[] RelatedProducts = [];
 }

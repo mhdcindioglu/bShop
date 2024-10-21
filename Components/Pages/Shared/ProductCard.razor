@@ -1,4 +1,6 @@
-﻿
+﻿@inject IJSRuntime JS
+@rendermode InteractiveServer
+
 <div class="col-lg-12">
     <div class="item-card mb@(MB)">
         <div class="item-image">
@@ -14,12 +16,28 @@
                 <li><a class="addtowishlist" data-id="47" href="javascript:void(0);"><i class="bi bi-heart"></i></a></li>
             </ul>
             <ul class="color-list">
-                @foreach (var clr in Product.Colors)
+                @foreach (var clr in Product.Colors.Split(";").ToArray())
                 {
-                    <li style="background: @clr;"></li>
+                    <li style="background: @(clr);"></li>
                 }
             </ul>
-            <a href="@Product.Link"><img src="imgs/products/@Product.Image" alt="@Product.Name"></a>
+            @if (Product.Images.Count > 1)
+            {
+                <div class="row owl-carousel caro-common product-card">
+                    @foreach (var img in Product.Images)
+                    {
+                        <a href="@Product.Link">
+                            <img src="imgs/products/@img.Name" alt="@Product.Name" />
+                        </a>
+                    }
+                </div>
+            }
+            else if (Product.Images.Count == 1)
+            {
+                <a href="@Product.Link">
+                    <img src="imgs/products/@Product.Images[0].Name" alt="@Product.Name" />
+                </a>
+            }
         </div>
         <h4 class="item-title"><a href="@Product.Link">@Product.Name</a></h4>
         <div class="brand-card">
@@ -27,11 +45,19 @@
                 <span>@Resource.Brand <a href="brands/@(Product.BrandID)">@Product.BrandName</a></span>
             </div>
             <div class="brand">
-                <span>@Resource.SoldBy <a href="vendors/@(Product.VendorID)">Product.VendorName</a></span>
+                <span>@Resource.SoldBy <a href="vendors/@(Product.VendorID)">@Product.VendorName</a></span>
             </div>
         </div>
         <div class="item-price-card">
-            <div class="item-price">@($"{Product.Price:C2}")</div>
+            @if (Product.OfferPrice > 0)
+            {
+                <div class="item-price">@($"{Product.OfferPrice:C2}")</div>
+                <div class="old-item-price">@($"{Product.SalePrice:C2}")</div>
+            }
+            else
+            {
+                <div class="item-price">@($"{Product.SalePrice:C2}")</div>
+            }
         </div>
         @if (Product.ShowRating)
         {
@@ -47,4 +73,8 @@
 @code {
     [Parameter] public ProductCardVM Product { get; set; } = new();
     [Parameter] public int MB { get; set; } = 30;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JS.InvokeVoidAsync("productImageSlider", $".product-card");
+    }
 }

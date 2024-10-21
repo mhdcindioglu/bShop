@@ -2066,9 +2066,18 @@ ul.head-round-icon {
             color: var(--theme-color);
         }
 
+.caro-common.product-card .owl-nav button {
+    top: 85%;
+    left: 13px;
+}
+
 .caro-common .owl-nav .owl-next {
     left: auto;
     right: -20px;
+}
+
+.caro-common.product-card .owl-nav .owl-next {
+    left: calc(100% - 28px);
 }
 
 .caro-common:hover .owl-nav button {
@@ -3621,3 +3630,7 @@ button.my-profile-info {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.dropdown .btn {
+    text-transform: unset;
+}

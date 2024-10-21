@@ -9,7 +9,9 @@
 @inject IProductService ProductSrv
 @inject NavigationManager NavMngr
 @layout NoCategoriesLayout
+@rendermode InteractiveServer
 
+<PageTitle>Products - @Resource.BShop_AppTitle</PageTitle>
 <Breadcrump Title="@Title" />
 
 <div class="section">
@@ -43,26 +45,7 @@
                             </div>
                         }
                     </div>
-                    <div class="row mt-15">
-                        <div class="col-lg-12">
-                            <nav>
-                                <ul class="pagination">
-                                    <li class="page-item disabled" aria-disabled="true" aria-label="« Previous">
-                                        <span class="page-link" aria-hidden="true">‹</span>
-                                    </li>
-                                    <li class="page-item active" aria-current="page">
-                                        <span class="page-link">1</span>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="https://bshopen.themeposh.net/frontend/getProductCategoryGrid?page=2">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="https://bshopen.themeposh.net/frontend/getProductCategoryGrid?page=2" rel="next" aria-label="Next »">›</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                    <Pagination TValue="ProductsPageModel" Value="Model" ValueExpression="@(() => Model)" ValueChanged="OnSelectionChanged" />
                 </div>
             </div>
         </div>
@@ -106,7 +89,8 @@
     {
         try
         {
-            Model.Products = await ProductSrv.GetAllAsync(new ProductsFilter { Categories = Model.Categories, CurrentPage = Model.CurrentPage, Showing = Model.Showing, Sort = Model.Sort, });
+            Model.Products = await ProductSrv.GetAllAsync(new ProductsFilter { Categories = Model.Categories, Brands = Model.Brands, CurrentPage = Model.CurrentPage, Showing = Model.Showing, Sort = Model.Sort, });
+            Model.AllItems = Model.Products.AllCount;
         }
         catch (Exception ex)
         {
@@ -153,14 +137,10 @@
         }
     }
 
-    public class ProductsPageModel
+    public class ProductsPageModel : BaseFilter
     {
         public string? Slug { get; set; }
         public string? Brand { get; set; }
-
-        public int CurrentPage { get; set; } = 1;
-        public Showing Showing { get; set; } = Showing.Showing_12;
-        public Sort Sort { get; set; } = Sort.Default;
 
         public PageList<CategoryVM> Categories { get; set; } = [];
         public PageList<BrandVM> Brands { get; set; } = [];

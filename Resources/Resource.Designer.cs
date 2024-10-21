@@ -196,6 +196,15 @@ namespace bShop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bShop.
+        /// </summary>
+        public static string BShop_AppTitle {
+            get {
+                return ResourceManager.GetString("BShop_AppTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to support@bshop.com.
         /// </summary>
         public static string BShop_Email {
