@@ -35,7 +35,7 @@
                 @if (CartItems.FirstOrDefault(x => x.ProductId == Product.Id)?.Quantity > 1)
                 {
                     <li>
-                        <a class="addtocart" @onclick="DecreaseCart" title="Decrease quantity">
+                        <a class="addtocart @(CartActive ? "active" : null)" @onclick="DecreaseCart" title="Decrease quantity">
                             <i class="bi bi-dash-circle"></i>
                         </a>
                     </li>
@@ -43,7 +43,7 @@
                 else if (CartItems.FirstOrDefault(x => x.ProductId == Product.Id)?.Quantity == 1)
                 {
                     <li>
-                        <a class="addtocart" @onclick="RemoveFromCart" title="Remove from cart">
+                        <a class="addtocart @(CartActive ? "active" : null)" @onclick="RemoveFromCart" title="Remove from cart">
                             <i class="bi bi-trash"></i>
                         </a>
                     </li>
