@@ -19,6 +19,11 @@
             </ul>
             <ul class="product-action">
                 <li>
+                    <a class="addtowishlist @(WhiteListActive ? "active" : null)" @onclick="AddToWhiteList" title="@(WhiteListState.Value.WhiteList.Contains(Product.Id) ? "Remove from white list" : "Add to white list")">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                </li>
+                <li>
                     <a class="addtocart @(CartActive ? "active" : null)" @onclick="AddToCart" title="Add to cart">
                         <i class="bi bi-cart"></i>
                         @if (CartItems.FirstOrDefault(x => x.ProductId == Product.Id)?.Quantity > 1)
@@ -27,11 +32,23 @@
                         }
                     </a>
                 </li>
-                <li>
-                    <a class="addtowishlist @(WhiteListActive ? "active" : null)" @onclick="AddToWhiteList" title="@(WhiteListState.Value.WhiteList.Contains(Product.Id) ? "Remove from white list" : "Add to white list")">
-                        <i class="bi bi-heart"></i>
-                    </a>
-                </li>
+                @if (CartItems.FirstOrDefault(x => x.ProductId == Product.Id)?.Quantity > 1)
+                {
+                    <li>
+                        <a class="addtocart" @onclick="DecreaseCart" title="Decrease quantity">
+                            <i class="bi bi-dash-circle"></i>
+                        </a>
+                    </li>
+                }
+                else if (CartItems.FirstOrDefault(x => x.ProductId == Product.Id)?.Quantity == 1)
+                {
+                    <li>
+                        <a class="addtocart" @onclick="RemoveFromCart" title="Remove from cart">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </li>
+                }
+
             </ul>
             <ul class="color-list">
                 @foreach (var clr in Product.Colors.Split(";").ToArray())
@@ -118,6 +135,34 @@
                     });
             else
                 ++item.Quantity;
+
+            await LocalStorage.SetItemAsync("Cart", cart);
+            Dispatcher.Dispatch(new UpdateCartAction(cart));
+        }
+    }
+
+    async void DecreaseCart()
+    {
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var cart = await LocalStorage.GetItemAsync<Cart>("Cart") ?? new();
+            var item = cart.CartItems.FirstOrDefault(x => x.ProductId == Product.Id);
+            if (item != null)
+                --item.Quantity;
+
+            await LocalStorage.SetItemAsync("Cart", cart);
+            Dispatcher.Dispatch(new UpdateCartAction(cart));
+        }
+    }
+
+    async void RemoveFromCart()
+    {
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var cart = await LocalStorage.GetItemAsync<Cart>("Cart") ?? new();
+            var item = cart.CartItems.FirstOrDefault(x => x.ProductId == Product.Id);
+            if (item != null)
+                cart.CartItems.Remove(item);
 
             await LocalStorage.SetItemAsync("Cart", cart);
             Dispatcher.Dispatch(new UpdateCartAction(cart));

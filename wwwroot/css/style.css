@@ -1024,6 +1024,11 @@ ul.head-round-icon {
         }
 
 ul.product-action li a .cart_count {
+    right: unset;
+    left: -5px;
+}
+
+ul.product-action li a .cart_count {
     background: #fff;
     border: 1px solid var(--theme-color);
     color: var(--theme-color);
@@ -1951,7 +1956,7 @@ ul.product-action li a .cart_count {
     .item-card:hover .item-image ul.product-action {
         visibility: visible;
         opacity: 1;
-        right: 6px;
+        right: 0;
     }
 
     .item-card .item-image ul.product-action li {

@@ -2,6 +2,7 @@
 
 @using Blazored.Toast.Configuration
 @using Microsoft.AspNetCore.Components.Sections
+@inject CookieService CookieSrv
 
 <HeadContent>
     <link rel="stylesheet" href="@Assets["libs/bootstrap/css/bootstrap.min.css"]" />
@@ -32,7 +33,11 @@
                 SuccessClass="success-toast-override"
                 SuccessIcon="fa fa-thumbs-up"
                 ErrorIcon="fa fa-bug" />
-<_NewsletterModal />
+
+@if (ShowNewsletter)
+{
+    <_NewsletterModal OnClosed="OnNewsletterClosed" OnEmailAdded="OnNewsletterEmialAdded" />
+}
 
 <_TopHeader />
 <_Header />
@@ -46,3 +51,31 @@
 <a href="#top" class="scroll-to-top" style="display: inline-block;">
     <i class="bi bi-arrow-up"></i>
 </a>
+
+
+@code {
+    bool ShowNewsletter = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var newsletter = await CookieSrv.GetCookie("Newsletter");
+            ShowNewsletter = newsletter == null;
+            StateHasChanged();
+        }
+    }
+
+    async void OnNewsletterClosed()
+    {
+        await CookieSrv.SetCookie("Newsletter", "close", 1);
+        ShowNewsletter = false;
+        StateHasChanged();  
+    }
+
+    async void OnNewsletterEmialAdded(string email)
+    {
+        await CookieSrv.SetCookie("Newsletter", email, 365 * 10);
+        ShowNewsletter = false;
+        StateHasChanged();
+    }
+}
