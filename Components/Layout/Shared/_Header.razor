@@ -1,4 +1,12 @@
-﻿<header id="sticky-header" class="header">
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using Blazored.LocalStorage
+@using bShop.Data.Entities
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthProv
+@inject IState<CartState> CartState
+@inject IState<WhiteListState> WhiteListState
+
+<header id="sticky-header" class="header">
     <div class="header-area">
         <div class="container">
             <div class="navbar-content">
@@ -21,13 +29,13 @@
                     <li>
                         <a href="/wishlist">
                             <i class="bi bi-heart"></i>
-                            <span class="cart_count count_wishlist">0</span>
+                            <span class="cart_count count_wishlist">@(WhiteListState.Value.WhiteList.Count)</span>
                         </a>
                     </li>
                     <li>
                         <a class="sidebar_show_hide">
                             <i class="bi bi-cart"></i>
-                            <span class="cart_count total_qty">0</span>
+                            <span class="cart_count total_qty">@(CartState.Value.Cart?.CartItems?.Count ?? 0)</span>
                         </a>
                     </li>
                 </ul>
@@ -37,5 +45,4 @@
 </header>
 
 @code {
-
 }

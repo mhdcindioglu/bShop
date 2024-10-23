@@ -13,7 +13,7 @@ public class ProductService(IDbContextFactory<ShopContext> DbFactory, ICategoryS
     public async Task<PageList<ProductCardVM>> GetAllAsync(ProductsFilter filter)
     {
         using var db = await DbFactory.CreateDbContextAsync();
-        var qry = db.Products.Include(x => x.Images).AsNoTracking();
+        var qry = db.Products.Include(x => x.Images).Include(x => x.CartItems).AsNoTracking();
 
         if (filter.Categories.SelectedItems().Length > 0)
             qry = qry.Where(x => filter.Categories.SelectedItems().Select(x => x.Id).Contains(x.CategoryId));

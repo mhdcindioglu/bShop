@@ -1,6 +1,11 @@
 ﻿@using bShop.Components.Account.Shared
+@using bShop.Data.Entities
 @rendermode InteractiveServer
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthProv
+@inject IDispatcher Dispatcher
 
+<Fluxor.Blazor.Web.StoreInitializer />
 <Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
@@ -11,3 +16,21 @@
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var auth = await AuthProv.GetAuthenticationStateAsync();
+            if (auth.User.Identity?.IsAuthenticated != true)
+            {
+                var whiteList = await LocalStorage.GetItemAsync<List<int>>("WhiteList") ?? [];
+                Dispatcher.Dispatch(new UpdateWhiteListAction(whiteList));
+
+                var cart = await LocalStorage.GetItemAsync<Cart>("Cart") ?? new();            
+                Dispatcher.Dispatch(new UpdateCartAction(cart));
+            }
+        }
+    }
+
+}

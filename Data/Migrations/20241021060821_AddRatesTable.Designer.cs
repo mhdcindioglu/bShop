@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bShop.Data;
 
@@ -11,13 +12,15 @@ using bShop.Data;
 namespace bShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20241021060821_AddRatesTable")]
+    partial class AddRatesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-rc.2.24474.1")
+                .HasAnnotation("ProductVersion", "9.0.0-preview.7.24405.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -181,65 +184,6 @@ namespace bShop.Migrations
                     b.ToTable("Brands");
                 });
 
-            modelBuilder.Entity("bShop.Data.Entities.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("bShop.Data.Entities.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(16,4)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(16,4)");
-
-                    b.Property<int?>("Rate")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartItems");
-                });
-
             modelBuilder.Entity("bShop.Data.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -301,7 +245,7 @@ namespace bShop.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("bShop.Data.Entities.Label", b =>
@@ -323,29 +267,6 @@ namespace bShop.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Labels");
-                });
-
-            modelBuilder.Entity("bShop.Data.Entities.NewsLetter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NewsLetters");
                 });
 
             modelBuilder.Entity("bShop.Data.Entities.Product", b =>
@@ -431,6 +352,38 @@ namespace bShop.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("bShop.Data.Entities.Rate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Rate");
+                });
+
             modelBuilder.Entity("bShop.Data.Entities.ShopUser", b =>
                 {
                     b.Property<int>("Id")
@@ -497,21 +450,6 @@ namespace bShop.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("bShop.Data.Entities.UserWhiteList", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserWhiteLists");
                 });
 
             modelBuilder.Entity("bShop.Data.Entities.Vendor", b =>
@@ -649,36 +587,6 @@ namespace bShop.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("bShop.Data.Entities.Cart", b =>
-                {
-                    b.HasOne("bShop.Data.Entities.ShopUser", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("bShop.Data.Entities.CartItem", b =>
-                {
-                    b.HasOne("bShop.Data.Entities.Cart", "Cart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("bShop.Data.Entities.Product", "Product")
-                        .WithMany("CartItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("bShop.Data.Entities.Image", b =>
                 {
                     b.HasOne("bShop.Data.Entities.Product", "Product")
@@ -733,16 +641,16 @@ namespace bShop.Migrations
                     b.Navigation("Vendor");
                 });
 
-            modelBuilder.Entity("bShop.Data.Entities.UserWhiteList", b =>
+            modelBuilder.Entity("bShop.Data.Entities.Rate", b =>
                 {
                     b.HasOne("bShop.Data.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Rates")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("bShop.Data.Entities.ShopUser", "User")
-                        .WithMany()
+                        .WithMany("Rates")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -755,11 +663,6 @@ namespace bShop.Migrations
             modelBuilder.Entity("bShop.Data.Entities.Brand", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("bShop.Data.Entities.Cart", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("bShop.Data.Entities.Category", b =>
@@ -779,14 +682,14 @@ namespace bShop.Migrations
 
             modelBuilder.Entity("bShop.Data.Entities.Product", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("Images");
+
+                    b.Navigation("Rates");
                 });
 
             modelBuilder.Entity("bShop.Data.Entities.ShopUser", b =>
                 {
-                    b.Navigation("Carts");
+                    b.Navigation("Rates");
                 });
 
             modelBuilder.Entity("bShop.Data.Entities.Vendor", b =>

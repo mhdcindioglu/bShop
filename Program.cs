@@ -1,9 +1,11 @@
-﻿using Blazored.Toast;
+﻿using Blazored.LocalStorage;
+using Blazored.Toast;
 using bShop.Components;
 using bShop.Components.Account;
 using bShop.Data;
 using bShop.Data.Entities;
 using bShop.Data.Services;
+using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +14,7 @@ namespace bShop
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("SqlServerUserCS") ?? throw new InvalidOperationException("Connection string 'SqlServerUserCS' not found.");;
@@ -37,13 +39,18 @@ namespace bShop
             .AddSignInManager()
             .AddDefaultTokenProviders();
 
+            builder.Services.AddFluxor(o => o.ScanAssemblies(typeof(Program).Assembly));
+
             builder.Services.AddSingleton<IEmailSender<ShopUser>, IdentityNoOpEmailSender>();
 
             builder.Services.AddScoped<IBrandService, BrandService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
-            builder.Services.AddScoped<IProductService, ProductService>(); 
+            builder.Services.AddScoped<INewsLetterService, NewsLetterService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<CookieService>();
 
             builder.Services.AddBlazoredToast();
+            builder.Services.AddBlazoredLocalStorage();
 
             var app = builder.Build();
 
@@ -59,7 +66,7 @@ namespace bShop
             app.MapStaticAssets();
             app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
             app.MapAdditionalIdentityEndpoints();
-            app.Run();
+            await app.RunAsync();
         }
     }
 }

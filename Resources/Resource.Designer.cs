@@ -1033,6 +1033,15 @@ namespace bShop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please Wait....
+        /// </summary>
+        public static string PleaseWait {
+            get {
+                return ResourceManager.GetString("PleaseWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Privacy Policy.
         /// </summary>
         public static string PrivacyPolicy {

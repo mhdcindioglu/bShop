@@ -1,5 +1,12 @@
-﻿@inject IJSRuntime JS
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using bShop.Data.Entities
 @rendermode InteractiveServer
+@inject AuthenticationStateProvider AuthProv
+@inject ILocalStorageService LocalStorage
+@inject IJSRuntime JS
+@inject IDispatcher Dispatcher
+@inject IState<CartState> CartState
+@inject IState<WhiteListState> WhiteListState
 
 <div class="col-lg-12">
     <div class="item-card mb@(MB)">
@@ -11,9 +18,20 @@
                 }
             </ul>
             <ul class="product-action">
-                <li><a href="/"><i class="bi bi-cart"></i></a></li>
-                <li><a href="/"><i class="bi bi-zoom-in"></i></a></li>
-                <li><a class="addtowishlist" data-id="47" href="javascript:void(0);"><i class="bi bi-heart"></i></a></li>
+                <li>
+                    <a class="addtocart @(CartActive ? "active" : null)" @onclick="AddToCart" title="Add to cart">
+                        <i class="bi bi-cart"></i>
+                        @if (CartItems.FirstOrDefault(x => x.ProductId == Product.Id)?.Quantity > 1)
+                        {
+                            <span class="cart_count total_qty">@CartItems.FirstOrDefault(x => x.ProductId == Product.Id)!.Quantity</span>
+                        }
+                    </a>
+                </li>
+                <li>
+                    <a class="addtowishlist @(WhiteListActive ? "active" : null)" @onclick="AddToWhiteList" title="@(WhiteListState.Value.WhiteList.Contains(Product.Id) ? "Remove from white list" : "Add to white list")">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                </li>
             </ul>
             <ul class="color-list">
                 @foreach (var clr in Product.Colors.Split(";").ToArray())
@@ -59,22 +77,65 @@
                 <div class="item-price">@($"{Product.SalePrice:C2}")</div>
             }
         </div>
-        @if (Product.ShowRating)
-        {
-            <div class="rating-wrap">
-                <div class="stars-outer">
-                    <div class="stars-inner" style="width:@(Product.RatingRate)%;"></div>
-                </div>
-                <span class="rating-count">(@Product.RatingCount)</span>
+        <div class="rating-wrap">
+            <div class="stars-outer">
+                <div class="stars-inner" style="width:@(Product.RatesCount > 0 ? 100 * Product.RatesAverage / 5 : 0)%;"></div>
             </div>
-        }
+            <span class="rating-count">(@Product.RatesCount)</span>
+        </div>
     </div>
 </div>
 @code {
     [Parameter] public ProductCardVM Product { get; set; } = new();
     [Parameter] public int MB { get; set; } = 30;
+    AuthenticationState auth = default!;
+    List<CartItem> CartItems => CartState.Value.Cart?.CartItems ?? [];
+    bool CartActive => CartItems.Select(x => x.ProductId).Contains(Product.Id);
+    bool WhiteListActive => WhiteListState.Value.WhiteList.Contains(Product.Id);
+
+    protected override async Task OnInitializedAsync()
+    {
+        auth = await AuthProv.GetAuthenticationStateAsync();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await JS.InvokeVoidAsync("productImageSlider", $".product-card");
+    }
+
+    async void AddToCart()
+    {
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var cart = await LocalStorage.GetItemAsync<Cart>("Cart") ?? new();
+            var item = cart.CartItems.FirstOrDefault(x => x.ProductId == Product.Id);
+            if (item == null)
+                cart.CartItems.Add(new CartItem
+                    {
+                        ProductId = Product.Id,
+                        Quantity = 1,
+                        Price = Product.OfferPrice.HasValue ? Product.OfferPrice.Value : Product.SalePrice,
+                    });
+            else
+                ++item.Quantity;
+
+            await LocalStorage.SetItemAsync("Cart", cart);
+            Dispatcher.Dispatch(new UpdateCartAction(cart));
+        }
+    }
+
+    async void AddToWhiteList()
+    {
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var whiteList = await LocalStorage.GetItemAsync<List<int>>("WhiteList") ?? [];
+            if (!whiteList.Contains(Product.Id))
+                whiteList.Add(Product.Id);
+            else
+                whiteList.Remove(Product.Id);
+
+            await LocalStorage.SetItemAsync("WhiteList", whiteList);
+            Dispatcher.Dispatch(new UpdateWhiteListAction(whiteList));
+        }
     }
 }

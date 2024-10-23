@@ -612,4 +612,7 @@
   <data name="BShop_AppTitle" xml:space="preserve">
     <value>bShop</value>
   </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Please Wait...</value>
+  </data>
 </root>

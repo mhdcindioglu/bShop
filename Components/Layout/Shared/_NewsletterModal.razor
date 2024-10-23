@@ -1,22 +1,57 @@
-﻿<div class="modal fade show" id="subscribe_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content newsletter-card">
-			<div class="modal-header newsletter-header">
-				<button onclick="popup_modal_close()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body newsletter-body">
-				<h4>Subscribe our newsletter</h4>
-				<p class="mb20">Subscribe to the mailing list to receive updates on special offers, new arrivals and our promotions.</p>
-				<div class="newsletter-form">
-					<input name="newsletter_email" id="newsletter_email" type="email" placeholder="Enter your email address">
-					<a class="btn theme-btn mt10 full newsletter_btn nletter_btn" href="javascript:void(0);">Submit</a>
-					<div class="newsletter_msg mt5"></div>
-				</div>
-			</div>
-		</div>
-	</div>
+﻿@rendermode InteractiveServer
+@using bShop.Data.Entities
+@inject INewsLetterService NewsLetterSrv
+
+<div class="modal fade show d-block" id="subscribe_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog" style="background-color: #00000066;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content newsletter-card">
+            <div class="modal-header newsletter-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="OnModalClosed"></button>
+            </div>
+            <div class="modal-body newsletter-body">
+                <h4>Subscribe our newsletter</h4>
+                <p class="mb20">Subscribe to the mailing list to receive updates on special offers, new arrivals and our promotions.</p>
+                <div class="newsletter-form">
+                    <EditForm Model="Model" OnValidSubmit="EmailAdded">
+                        <DataAnnotationsValidator />
+                        <input @bind-value="@Model.Email" type="email" placeholder="Enter your email address">
+                        <ValidationMessage For="@(() => Model.Email)" class="newsletter_msg validation-message mt5"/>
+                        <button class="btn theme-btn mt10 full newsletter_btn nletter_btn @(Loading ? "disabled" : null)">
+                            @if(Loading)
+                            {
+                                <span class="spinner-border spinner-border-sm"></span> @Resource.PleaseWait
+                            }
+                            else
+                            {
+                                <span>Submit</span>
+                            }
+                        </button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
-
+    [Parameter] public NewsLetter Model { get; set; } = new();
+    [Parameter] public EventCallback OnClosed { get; set; }
+    [Parameter] public EventCallback<string> OnEmailAdded { get; set; }
+    bool Loading = false;
+    async void OnModalClosed() => await OnClosed.InvokeAsync();
+    async void EmailAdded()
+    {
+        Loading = true;
+        StateHasChanged();
+        var response = await NewsLetterSrv.AddToList(Model);
+        Loading = false;
+        StateHasChanged();
+        if(response.IsSuccess)
+        {
+            ToastSrv.ShowSuccess("Your email added to our newsletter!");
+            await OnEmailAdded.InvokeAsync(Model.Email);
+        }
+        else
+            ToastSrv.ShowError(response.ErrorsMessage);
+    }
 }

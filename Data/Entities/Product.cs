@@ -46,4 +46,5 @@ public class Product : IUniqueEntity<int>
     public DateTime CreationDate { get; set; }
     
     public virtual List<Image> Images { get; set; } = [];
+    public virtual List<CartItem> CartItems { get; set; } = [];
 }
