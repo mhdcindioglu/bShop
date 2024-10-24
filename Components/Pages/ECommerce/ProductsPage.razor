@@ -1,6 +1,7 @@
 ﻿@page "/Products"
-@page "/{Slug}/Products"
-@page "/{Slug}/{Brand}/Products"
+@page "/Products/Category/{CategorySlug}"
+@page "/Products/Brand/{BrandSlug}"
+@page "/Products/{CategorySlug}/{BrandSlug}"
 @using Humanizer
 @using bShop.Components.Pages.ECommerce.Shared
 @using bShop.Data.Enums
@@ -12,6 +13,7 @@
 @rendermode InteractiveServer
 
 <PageTitle>Products - @Resource.BShop_AppTitle</PageTitle>
+
 <Breadcrump Title="@Title" />
 
 <div class="section">
@@ -54,8 +56,8 @@
 
 
 @code {
-    [Parameter] public string? Slug { get; set; }
-    [Parameter] public string? Brand { get; set; }
+    [Parameter] public string? CategorySlug { get; set; }
+    [Parameter] public string? BrandSlug { get; set; }
     ProductsPageModel Model = new();
     string Title
     {
@@ -73,11 +75,11 @@
     {
         try
         {
-            Model.Slug = Slug;
-            Model.Brand = Brand;
+            Model.CategorySlug = CategorySlug;
+            Model.BrandSlug = BrandSlug;
             Model = await ProductSrv.GetProductsPageModel(Model);
-            Model.Categories.ForEach(category => category.Selected = category.Slug.Equals(Slug, StringComparison.CurrentCultureIgnoreCase));
-            Model.Brands.ForEach(brand => brand.Selected = brand.Name.Equals(Brand, StringComparison.CurrentCultureIgnoreCase));
+            Model.Categories.ForEach(category => category.Selected = category.Slug.Equals(CategorySlug, StringComparison.CurrentCultureIgnoreCase));
+            Model.Brands.ForEach(brand => brand.Selected = brand.Name.Equals(BrandSlug, StringComparison.CurrentCultureIgnoreCase));
         }
         catch (Exception ex)
         {
@@ -139,8 +141,8 @@
 
     public class ProductsPageModel : BaseFilter
     {
-        public string? Slug { get; set; }
-        public string? Brand { get; set; }
+        public string? CategorySlug { get; set; }
+        public string? BrandSlug { get; set; }
 
         public PageList<CategoryVM> Categories { get; set; } = [];
         public PageList<BrandVM> Brands { get; set; } = [];

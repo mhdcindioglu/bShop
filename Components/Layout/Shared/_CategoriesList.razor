@@ -1,7 +1,7 @@
 ﻿<li><a href="/Products" class="fw-bold">Products</a></li>
 @foreach (var category in Categories)
 {
-    <li><a href="/@(category.Slug)/Products">@(category.Name)</a></li>
+    <li><a href="/Products/Category/@(category.Slug)">@(category.Name)</a></li>
 }
 @code {
     [Parameter] public PageList<CategoryVM> Categories { get; set; } = [];

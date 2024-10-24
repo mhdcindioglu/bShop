@@ -1,11 +1,14 @@
 ﻿using bShop.Data.Entities;
+using bShop.Data.Interfaces;
 using System.Linq;
 
 namespace bShop.Data.ViewModels;
 
-public class ProductCardVM
+public class ProductCardVM : IUniqueEntity<int>
 {
     public int Id { get; set; }
+    public string ShortDesc { get; set; } = string.Empty;
+
     public List<ProductCardLabelVM> Labels { get; set; } = [];
 
     public int CategoryId { get; set; }
@@ -32,4 +35,5 @@ public class ProductCardVM
 
     public List<Image> Images { get; set; } = [];
     public virtual List<CartItem> CartItems { get; set; } = [];
+    public virtual List<ProductCardVM> RelatedProducts { get; set; } = [];
 }

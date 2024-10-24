@@ -5,6 +5,7 @@ namespace bShop.Data.Entities;
 public class Brand : IUniqueEntity<int>
 {
     public int Id { get; set; }
+    public string Slug { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     
     public bool Active { get; set; }

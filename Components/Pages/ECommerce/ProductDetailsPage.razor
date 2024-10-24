@@ -1,223 +1,201 @@
-﻿@page "/ProductDetails/{Id:int}/{Slug}"
+﻿@page "/Product/{Id:int}/{Slug}"
 @using bShop.Data.Entities
+@inject IProductService ProductSrv
+@inject NavigationManager NavMngr
 
 @layout NoCategoriesLayout
 
 <Breadcrump Title="@(Product.Name)" CategoryTitle="@(Product.Category?.Name)" CategoryLink="@($"/Category/{Product.CategoryId}/{Product.Category?.Slug}")" />
 
 <div class="inner-section">
-	<div class="container">
-		<!-- Single Product -->
-		<div class="row">
-			<div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 col-xxl-5 mb25">
-				<div id="product_big" class="single-product-slider owl-carousel caro-single-product owl-loaded owl-drag">
+    <div class="container">
+        <!-- Single Product -->
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 col-xxl-5 mb25">
+                <div id="product_big" class="single-product-slider owl-carousel caro-single-product owl-loaded owl-drag">
+                    @foreach (var image in Product.Images)
+                    {
+                        <div class="item">
+                            <img src="imgs/products/@(image.Name)?version=@(image.Version)" alt="">
+                        </div>
+                    }
+                </div>
+                <div id="product_thumbs" class="thumbnail-card owl-carousel owl-loaded owl-drag">
+                    <div class="owl-stage-outer">
+                        <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 154px;">
+                            <div class="owl-item active current" style="width: 66.833px; margin-right: 10px;">
+                                <div class="item">
+                                    <img src="https://www.bshopen.themeposh.net/public/media/17112021180008-600x600-2-hp-product.jpg" alt="">
+                                </div>
+                            </div><div class="owl-item active" style="width: 66.833px; margin-right: 10px;">
+                                <div class="item">
+                                    <img src="https://www.bshopen.themeposh.net/public/media/17112021180340-600x600-1-hp-product.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><i class="bi bi-arrow-left"></i></button><button type="button" role="presentation" class="owl-next"><i class="bi bi-arrow-right"></i></button></div><div class="owl-dots disabled"></div>
+                </div>
+            </div>
 
-					<div class="owl-stage-outer">
-						<div class="owl-stage" style="transform: translate3d(-1047px, 0px, 0px); transition: all; width: 2619px;">
-							<div class="owl-item cloned" style="width: 523.785px;">
-								<div class="item">
-									<img src="https://bshopen.themeposh.net/public/media/17112021171308-motorbike-sujuki-2.jpg" alt="">
-								</div>
-							</div><div class="owl-item cloned" style="width: 523.785px;">
-								<div class="item">
-									<img src="https://bshopen.themeposh.net/public/media/17112021171308-motorbike-sujuki-2.jpg" alt="">
-								</div>
-							</div><div class="owl-item active" style="width: 523.785px;">
-								<div class="item">
-									<img src="https://bshopen.themeposh.net/public/media/17112021171308-motorbike-sujuki-2.jpg" alt="">
-								</div>
-							</div><div class="owl-item cloned" style="width: 523.785px;">
-								<div class="item">
-									<img src="https://bshopen.themeposh.net/public/media/17112021171308-motorbike-sujuki-2.jpg" alt="">
-								</div>
-							</div><div class="owl-item cloned" style="width: 523.785px;">
-								<div class="item">
-									<img src="https://bshopen.themeposh.net/public/media/17112021171308-motorbike-sujuki-2.jpg" alt="">
-								</div>
-							</div>
-						</div>
-					</div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><i class="bi bi-arrow-left"></i></button><button type="button" role="presentation" class="owl-next"><i class="bi bi-arrow-right"></i></button></div><div class="owl-dots disabled"></div>
-				</div>
-				<div id="product_thumbs" class="thumbnail-card owl-carousel owl-loaded owl-drag">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 mb25">
+                <div class="pr_details">
+                    <h4 class="product_title">@Product.Name</h4>
+                    <div class="pr_rating_wrap">
+                        <div class="rating-wrap">
+                            <div class="stars-outer">
+                                <div class="stars-inner" style="width:100%;"></div>
+                            </div>
+                            <span class="rating-count">(@Product.RatesCount Review)</span>
+                        </div>
+                    </div>
 
-					<div class="owl-stage-outer">
-						<div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 90px;">
-							<div class="owl-item active current" style="width: 79.334px; margin-right: 10px;">
-								<div class="item">
-									<img src="https://bshopen.themeposh.net/public/media/17112021171308-600x600-motorbike-sujuki-2.jpg" alt="">
-								</div>
-							</div>
-						</div>
-					</div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><i class="bi bi-arrow-left"></i></button><button type="button" role="presentation" class="owl-next"><i class="bi bi-arrow-right"></i></button></div><div class="owl-dots disabled"></div>
-				</div>
-			</div>
+                    <div class="pr_extra">@Product.ShortDesc</div>
 
-			<div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 mb25">
-				<div class="pr_details">
-					<h4 class="product_title">Blue Gixxer SF</h4>
-					<div class="pr_rating_wrap">
-						<div class="rating-wrap">
-							<div class="stars-outer">
-								<div class="stars-inner" style="width:100%;"></div>
-							</div>
-							<span class="rating-count">(2 Review)</span>
-						</div>
-					</div>
+                    <div class="pr_extra"><strong>Brand:</strong><a href="/Products/Brand/30/footwear">  @Product.BrandName</a></div>
 
-					<div class="pr_extra">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    <div class="pr_extra"><strong>Sold By:</strong><a href="https://www.bshopen.themeposh.net/stores/48/gorigor">  Gorigor</a></div>
 
-					<div class="pr_extra"><strong>Brand:</strong><a href="https://bshopen.themeposh.net/brand/36/roadstar">  @Product.BrandName</a></div>
+                    <div class="pr_extra"><strong>SKU:</strong>  TP-365412</div>
 
-					<div class="pr_extra"><strong>Sold By:</strong><a href="https://bshopen.themeposh.net/stores/47/carhat">  Carhat</a></div>
-
-					<div class="pr_extra"><strong>SKU:</strong>  TP-354125</div>
-
-					<div class="product_price">
-						<div class="item-price">@($"{Product.OfferPrice:C2}")</div>
-					</div>
-					<div class="pr_widget">
-						<label class="widget-title">Color<span class="red">*</span></label>
-						<ul class="widget-color">
-							<li id="color_Blue" class="tp_color">
-								<a data-id="Blue" class="selectcolor" href="javascript:void(0);" title="Blue"><span style="background:#10c4e4;"></span></a>
-							</li>
-						</ul>
-					</div>
+                    <div class="product_price">
+                        <div class="item-price">$6</div>
+                    </div>
+                    <div class="pr_widget">
+                        <label class="widget-title">Color<span class="red">*</span></label>
+                        <ul class="widget-color">
+                            <li id="color_Green" class="tp_color">
+                                <a data-id="Green" class="selectcolor" href="javascript:void(0);" title="Green"><span style="background:#1faa04;"></span></a>
+                            </li>
+                            <li id="color_Blue" class="tp_color">
+                                <a data-id="Blue" class="selectcolor" href="javascript:void(0);" title="Blue"><span style="background:#10c4e4;"></span></a>
+                            </li>
+                        </ul>
+                    </div>
 
 
-					<div class="pr_extra"><strong>Availability:</strong><span class="instock">352 In Stock</span></div>
+                    <div class="pr_extra"><strong>Availability:</strong><span class="instock">540 In Stock</span></div>
 
-					<div class="pr_quantity">
-						<label for="quantity">Quantity<span class="red">*</span></label>
-						<input name="quantity" id="quantity" type="number" min="1" max="352" value="1">
-					</div>
-					<div class="pr_buy_cart">
-						<a class="btn theme-btn cart product_addtocart" data-id="46" data-stockqty="352" href="javascript:void(0);">Add To Cart</a>
-						<a class="btn theme-btn cart wishlist addtowishlist" data-id="46" href="javascript:void(0);"><i class="bi bi-heart-fill"></i></a>
-						<a class="btn theme-btn cart product_buy_now" data-id="46" data-stockqty="352" href="javascript:void(0);">Buy Now</a>
-					</div>
-					<div id="variation_required" style="display: none;"><p class="red">Please select required field.</p></div>
-					<div id="quantity_required" style="display: none;"><p class="red">Please enter quantity.</p></div>
-					<div id="stockqty_required" style="display: none;"><p class="red">The value must be less than or equal to 352</p></div>
-					<div id="stockout_required" style="display: none;"><p class="red">This product out of stock.</p></div>
-					<div class="pr_extra"><strong>Category:</strong> <a href="https://bshopen.themeposh.net/product-category/8/motor-bike">Motor Bike</a></div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="pr-description-review">
-					<div class="desc-review-nav nav">
-						<a class="active" href="#des_description" data-bs-toggle="tab">Description</a>
-						<a href="#des_reviews" data-bs-toggle="tab">Reviews (2)</a>
-					</div>
-					<div class="tab-content">
-						<div id="des_description" class="tab-pane active">
-							<div class="entry">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at tellus at urna. Id leo in vitae turpis massa sed elementum. Nibh nisl condimentum id venenatis a. Vel orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Accumsan sit amet nulla facilisi. Faucibus nisl tincidunt eget nullam non nisi est sit. Est placerat in egestas erat imperdiet sed. In fermentum posuere urna nec.
-							</div>
-						</div>
-						<div id="des_reviews" class="tab-pane">
-							<div class="review-content">
-								<!-- Review Form-->
-								<div class="row">
-									<div class="col-lg-6">
-										<h4>Submit your review</h4>
-										<p class="theme-color">Please <a href="https://bshopen.themeposh.net/user/login">login</a> to write review!</p>
-										<div class="form-product-review">
-											<form class="form" method="POST" action="https://bshopen.themeposh.net/frontend/saveReviews">
-												<input type="hidden" name="_token" value="PUMWgqWPpkrIEwbHSeU2TmEaqiy0ZmB6EX3YgcI3">
-												<div class="mb-3">
-													<textarea name="comments" placeholder="Write comment" class="form-control" rows="3"></textarea>
-												</div>
-												<div class="mb-3">
-													<label for="rating" class="form-label">Your rating of this product</label>
-													<select id="rating" name="rating" class="form-select form-select-sm">
-														<option value="5">5 Star</option>
-														<option value="4">4 Star</option>
-														<option value="3">3 Star</option>
-														<option value="2">2 Star</option>
-														<option value="1">1 Star</option>
-													</select>
-												</div>
-												<input name="item_id" type="hidden" value="46">
-												<button type="submit" class="btn theme-btn">Submit Review</button>
-											</form>
-										</div>
-									</div>
-									<div class="col-lg-6"></div>
-								</div>
-								<!-- /Review Form/-->
-								<!-- Product Review -->
-								<div class="row">
-									<div class="col-lg-12">
-										<div class="review-heading">
-											<h4>2 reviews for - Blue Gixxer SF</h4>
-										</div>
-										<div id="tp_datalist">
-											<div class="review-body">
-												<div class="review-card">
-													<div class="review-photo">
-														<span class="username">S</span>
-													</div>
-													<div class="review-info">
-														<div class="author-name">Shamim Ahmmed</div>
-														<div class="rating-wrap">
-															<div class="stars-outer">
-																<div class="stars-inner" style="width:100%;"></div>
-															</div>
-														</div>
-														<div class="date">01-02-2023</div>
-														<div class="desc">
-															<p>asdasd</p>
-														</div>
-													</div>
-												</div>
-												<div class="review-card">
-													<div class="review-photo">
-														<span class="username">A</span>
-													</div>
-													<div class="review-info">
-														<div class="author-name">Abdullah Al Mamun</div>
-														<div class="rating-wrap">
-															<div class="stars-outer">
-																<div class="stars-inner" style="width:100%;"></div>
-															</div>
-														</div>
-														<div class="date">19-11-2021</div>
-														<div class="desc">
-															<p>Nice Product</p>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="row mt-15">
-												<div class="col-lg-12">
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /Product Review/ -->
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <div class="pr_quantity">
+                        <label for="quantity">Quantity<span class="red">*</span></label>
+                        <input name="quantity" id="quantity" type="number" min="1" max="540" value="1">
+                    </div>
+                    <div class="pr_buy_cart">
+                        <a class="btn theme-btn cart product_addtocart" data-id="50" data-stockqty="540" href="javascript:void(0);">Add To Cart</a>
+                        <a class="btn theme-btn cart wishlist addtowishlist" data-id="50" href="javascript:void(0);"><i class="bi bi-heart-fill"></i></a>
+                        <a class="btn theme-btn cart product_buy_now" data-id="50" data-stockqty="540" href="javascript:void(0);">Buy Now</a>
+                    </div>
+                    <div id="variation_required" style="display: none;"><p class="red">Please select required field.</p></div>
+                    <div id="quantity_required" style="display: none;"><p class="red">Please enter quantity.</p></div>
+                    <div id="stockqty_required" style="display: none;"><p class="red">The value must be less than or equal to 540</p></div>
+                    <div id="stockout_required" style="display: none;"><p class="red">This product out of stock.</p></div>
+                    <div class="pr_extra"><strong>Category:</strong> <a href="https://www.bshopen.themeposh.net/product-category/6/headphones">Headphones</a></div>
+                </div>
+            </div>
+        </div>
+        <!-- /Single Product/ -->
+        <!-- Product Description Review -->
+        <div class="row">
+            <div class="col-lg-12">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pr-description-review">
+                    <div class="desc-review-nav nav">
+                        <a class="active" href="#des_description" data-bs-toggle="tab">Description</a>
+                        <a href="#des_reviews" data-bs-toggle="tab">Reviews (1)</a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="des_description" class="tab-pane active">
+                            <div class="entry">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at tellus at urna. Id leo in vitae turpis massa sed elementum. Nibh nisl condimentum id venenatis a. Vel orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Accumsan sit amet nulla facilisi. Faucibus nisl tincidunt eget nullam non nisi est sit. Est placerat in egestas erat imperdiet sed. In fermentum posuere urna nec.
+                            </div>
+                        </div>
+                        <div id="des_reviews" class="tab-pane">
+                            <div class="review-content">
+                                <!-- Review Form-->
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <h4>Submit your review</h4>
+                                        <p class="theme-color">Please <a href="https://www.bshopen.themeposh.net/user/login">login</a> to write review!</p>
+                                        <div class="form-product-review">
+                                            <form class="form" method="POST" action="https://www.bshopen.themeposh.net/frontend/saveReviews">
+                                                <input type="hidden" name="_token" value="wFZKbA551ArJkNhNRZ1NiPIDDvphNuxTlZDdcfiM">
+                                                <div class="mb-3">
+                                                    <textarea name="comments" placeholder="Write comment" class="form-control" rows="3" disabled=""></textarea>
+                                                </div>
+                                                <a class="btn theme-btn" href="https://www.bshopen.themeposh.net/user/login"><i class="bi bi-box-arrow-in-right"></i> Please Login</a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6"></div>
+                                </div>
+                                <!-- /Review Form/-->
+                                <!-- Product Review -->
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="review-heading">
+                                            <h4>1 reviews for - Wireless Gaming Headphone</h4>
+                                        </div>
+                                        <div id="tp_datalist">
+                                            <div class="review-body">
+                                                <div class="review-card">
+                                                    <div class="review-photo">
+                                                        <span class="username">A</span>
+                                                    </div>
+                                                    <div class="review-info">
+                                                        <div class="author-name">Abdullah Al Mamun</div>
+                                                        <div class="rating-wrap">
+                                                            <div class="stars-outer">
+                                                                <div class="stars-inner" style="width:100%;"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="date">19-11-2021</div>
+                                                        <div class="desc">
+                                                            <p>wow</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-15">
+                                                <div class="col-lg-12">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Product Review/ -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Product Description Review/ -->
+    </div>
 </div>
 
-<ProductsSlider Title="@Resource.RelatedProducts" SeeAllLink="/" Products="RelatedProducts" CssClass="related-products-carousel" />
+<ProductsSlider Title="@Resource.RelatedProducts" SeeAllLink="/" Products="Product.RelatedProducts" CssClass="related-products-carousel" />
 
 @code {
-		[Parameter] public required int Id { get; set; }
-		[Parameter] public required string Slug { get; set; }
-		ProductCardVM Product = new ProductCardVM() { Id = 7, Name = "Blue Gixxer SF", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Images = [ new Image { Name = "product-7.jpg" }], OfferPrice = 5500, Labels = [], Colors = "#10c4e4;#ee00ff;", 
-};
-		ProductCardVM[] RelatedProducts = [];
+    [Parameter] public required int Id { get; set; }
+    [Parameter] public required string Slug { get; set; }
+    ProductCardVM Product = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            Product = await ProductSrv.GetAsync<ProductCardVM>(Id) ?? new();
+            if (Slug != Product.Slug)
+            {
+                ToastSrv.ShowError("Product not found or invalid link!");
+                NavMngr.NavigateTo("Products");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastSrv.ShowError(ex.Message);
+        }
+    }
 }

@@ -1,7 +1,7 @@
 ﻿@inject IJSRuntime JS
 @rendermode InteractiveServer
 
-@if (Products.Length > 0)
+@if (Products.Count > 0)
 {
     <div class="section">
         <div class="container">
@@ -25,8 +25,8 @@
 @code {
     [Parameter] public required string Title { get; set; }
     [Parameter] public required string SeeAllLink { get; set; }
-    [Parameter] public required ProductCardVM[] Products { get; set; }
     [Parameter] public required string CssClass { get; set; }
+    [Parameter] public required List<ProductCardVM> Products { get; set; } = [];
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)

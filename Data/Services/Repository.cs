@@ -15,11 +15,11 @@ public abstract class Repository<TKey, TEntity>(IDbContextFactory<ShopContext> D
         return await db.Set<TEntity>().AsNoTracking().ToPageListAsync<TEntity, VM>(filter);
     }
 
-    public virtual async Task<TEntity?> GetAsync(TKey id)
+    public virtual async Task<T?> GetAsync<T>(TKey id) where T : class, IUniqueEntity<int>
     {
         ArgumentNullException.ThrowIfNull(id);
         using var db = await DbFactory.CreateDbContextAsync();
-        return await db.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
+        return await db.Set<TEntity>().AsNoTracking().ProjectTo<T>().FirstOrDefaultAsync(x => x.Id.Equals(id));
     }
 
     public virtual async Task<TEntity> CreateAsync(TEntity entity)
@@ -43,7 +43,7 @@ public abstract class Repository<TKey, TEntity>(IDbContextFactory<ShopContext> D
     public virtual async Task<TEntity?> DeleteAsync(TKey id)
     {
         using var db = await DbFactory.CreateDbContextAsync();
-        var entity = await GetAsync(id);
+        var entity = await db.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
         if (entity is null) return null;
         db.Entry(entity).State = EntityState.Modified;
         await db.SaveChangesAsync();
@@ -56,7 +56,7 @@ public interface IRepository<in TKey, TEntity>
     where TEntity : class, IUniqueEntity<TKey>
 {
     Task<PageList<VM>> GetAllAsync<VM>(BaseFilter? filter = null) where VM : class;
-    Task<TEntity?> GetAsync(TKey id);
+    Task<T?> GetAsync<T>(TKey id) where T : class, IUniqueEntity<int>;
     Task<TEntity> CreateAsync(TEntity entity);
     Task<TEntity> UpdateAsync(TEntity entity);
     Task<TEntity?> DeleteAsync(TKey id);

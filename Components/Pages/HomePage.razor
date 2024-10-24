@@ -16,7 +16,7 @@
 <Trending />
 
 @code{
-    ProductCardVM[] Products =
+    List<ProductCardVM> Products =
     [
         new ProductCardVM(){ Id = 6, Name = "Yellow (VF1100C V65)", Slug = "yellow-(vf1100c-v65)", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Images = [ new Image { Name = "product-6.jpg" }], OfferPrice = 5500, Labels = [new() { Text = "New", BColor = "#222222", FColor = "#fff" },], Colors = "#e7a202", },
     new ProductCardVM(){ Id = 7, Name = "Blue Gixxer SF", Slug = "blue-gixxer-sf", BrandID = 12, BrandName = "Roadstar", VendorID = 123, VendorName = "Carhat", Images = [ new Image { Name = "product-7.jpg" }], OfferPrice = 5500, Labels = [], Colors = "#10c4e4", },

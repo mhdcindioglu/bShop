@@ -35,15 +35,15 @@ public class ProductService(IDbContextFactory<ShopContext> DbFactory, ICategoryS
 
     public async Task<ProductsPageModel> GetProductsPageModel(ProductsPageModel model)
     {
-        var selectedCategories = model.Categories.SelectedItems();
         model.Categories = await CategorySrv.GetAllAsync<CategoryVM>();
-        model.Categories.Select(selectedCategories.Select(x => x.Id).ToArray());
+        var category = model.Categories.FirstOrDefault(x => x.Slug == model.CategorySlug);
+        if (category != null)
+            model.Categories.Select([category.Id]);
 
-        var selectedBrands = model.Brands.SelectedItems();
         model.Brands = await BrandSrv.GetAllAsync<BrandVM>();
-        model.Brands.Select(selectedBrands.Select(x => x.Id).ToArray());
-
-        model.Categories.ForEach(category => category.Selected = category.Slug.Equals(model.Slug, StringComparison.CurrentCultureIgnoreCase));
+        var brand = model.Brands.FirstOrDefault(x => x.Slug == model.BrandSlug);
+        if (brand != null)
+        model.Brands.Select([brand.Id]);
 
         model.Products = await GetAllAsync(new ProductsFilter { Categories = model.Categories, Brands = model.Brands, CurrentPage = model.CurrentPage, Showing = model.Showing, Sort = model.Sort, });
         model.AllItems = model.Products.AllCount;
@@ -51,7 +51,7 @@ public class ProductService(IDbContextFactory<ShopContext> DbFactory, ICategoryS
     }
 }
 
-public interface IProductService
+public interface IProductService : IRepository<int, Product>
 {
     Task<PageList<ProductCardVM>> GetAllAsync(ProductsFilter filter);
     Task<ProductsPageModel> GetProductsPageModel(ProductsPageModel model);
